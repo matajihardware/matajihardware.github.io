@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Flight Log">
+<meta name="theme-color" content="#225533">
+<meta name="description" content="sUAS drone flight hour log">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAFkUlEQVR4nO3dPXLbVhSG4ZNMRq28hvSqUrvIeAUp0mtp7lN4BZkUqlO5zxqUNk1SOBiLNEDi/uHifN/7dPbYJID78uhKpMgIAAAAAAAAAAAAAABS+272Aez1468//Tv7GJz99dufKVo55UESbw5njPw0B0TEuZ0l7ukHQchaZoc97c4JWdussA+/U0L2cnTY3x95Z8Ts5+g1PyxoYvZ15NoP/3JAyHhr9BZk6IQmZlwb3cSwoIkZW0a2MSRoYsY9oxrpHjQxY68RrXQNmphRqnczh/4cGhitW9BMZ9Tq2U6XoIkZrXo11Bw0MaOXHi2xh4aUpqCZzuittSkmNKRUv1CE6bzt88ffd/27p+cPg48kr9oXMTGhIaUqaKYzRqttjAkNKQQNKcVBs93AUWpaY0JDCkFDCkFDCkFDSlHQfEOIo5U2x4SGFIKGFLmg974wCJqkgl5iJur7VK+RTNDXC6S6YD0oP/Algt5aGMUFa6X+wE8f9L0FUVuwFg4P/NRB710IpQWr5fLATxt06QKoLFgNpwd+yqBrL7zCgpVye+CnDLrll0uzL1gJxwd+yqAjiPqelnPM/NvoaYOOIOotrjFHJA86gqivOcccIRB0BFEv3GOOEAk6gqiJ+QuZoCN8oybmr6SCjvCLmpgvyQUd4RM1MX9LMugI/aiJeZ1s0BG6URPzNumgI/SiJubb5IOO0ImamO+zCDoif9TEvI9N0BF5oybm/ayCjsgXNTGXsQs6Ik/UxFzOMuiI80dNzHVsg444b9TEXM866IjzRU3MbeyDjjhP1MTcjqD/NztqYu6DoN+YFTUx91P0ecou7+B/hmcG93CJueRzv5nQKzKEkuEYZ/hh9gGc1dPzh+ZJ/cfn59W///npY9PtEvM2thx3lEa9FfGW0rgdY2bL0VFJQKUxl/4fx5hLMaF3ujWpa0Jec2taO8fMhB5gZlDOMZci6AJrYfWazlu3RcxlCLpBz5hH3qaT6T+2y/IkxizZrs/sryhMaEgh6EojtwZsO+oRNKQQNKQQNKQQNKQQNKQQdKXWl4DOum11BA0p058pnP3MUqmjn7nLdn1mY0I3GLE1YLvRZvqEnund3/8U/5/3v7wfcCQX93Dxp3eVt/L6+NB8JBnZTuiamDNRP78tdhPaaaGXc3Wa1rYTGpqsgnaazm85nbdN0E6Lusbl/G2ChgeChhSChhSChhSChhSboJ2eXFjjcv42QUf4LOo1p/O2Chr67IJ+fXyIl08vsw/jEK+PD1bTOcIw6OUF+upRv3x6Sfc2Yj1YvT/0UZ82tfd+Rtxm6/2cEe8PvSJ7ELM/RzELi6Czx7wg6vvkg1aJeUHUt0kHrRbzgqi3yQatGvOCqNdJBq0e84KovyUXtEvMC6K+JBW0W8wLov5KJmjXmBdE/YVE0O4xL4haIGhivuQedeqgiXmdc9Rpgybm21yjThk0Me9Te66Zr1HKoB0XqlbpOWe/RimDjvBbqBZ7z13hGqUNOsJroVrduwYq1yh10BE+C9XD1rVQukbpg47wWKherq+J2jWSCDpCf6F6Wq6N4jWSCTpCe6F6U71GUkFH6C4U9pELGt4IGlKKgi55ww+gh9LmmNCQQtCQQtCQQtCQUhw03xjiKDWtMaEhhaAhpSpoth0YrbYxJjSkNE3a7B9RgXNq2QEwoSGlKWj20uittSkmNKQ0B82URi89WuoyoYkarXo11G3LQdSo1bMd9tCQ0jVopjRK9W6m+4Qmauw1opUhWw6ixj2jGhm2hyZqbBnZxtBvCoka10Y3cVhwvJDJ21HD7bAf2zGtfR259of+HJqo/Ry95tMCYwuibdbwmj4xCVvL7K/C04NeEHZus0NenOIgrhF3DmeJ+K3THdAWIp/rjPECAAAAAAAAAAAAACDoP1ItW4FwGXmdAAAAAElFTkSuQmCC">
+<link rel="icon" type="image/png" sizes="192x192" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAGBElEQVR4nO3dO3IcNxSF4UuXSqm1BuWMFCtwaQUOlHNpyhl4BS4Fihkp5xrs1IkcUF2cGc30A7gALu75v0wlqQcEzgF62HyYAQAAAAAAAAAAAAAAAMjgbvQAjnr/+cOP0WPAbc+PT1NlKvxgCfzcohci5OAIfU4RyxBqQARfQ6QihBgIwdcUoQhDB0DwYTa2CENemODjmhFF+K33CxJ+3DIiG10LQPixpXdGuhw5BB8letwSNT8BCD9K9chO0wIQftRqnaFmBSD88NIyS00KQPjhrVWmun8aFIjEvQDs/milRbZcC0D40Zp3xtwKQPjRi2fWeA8AaS4FYPdHb16Z4wSAtOoCsPtjFI/svfEYCPb5/uXvXf/u/uFT45FgUXUCsPtjtNoM8h4A0ooLwO6PKGqyyAkAaRQA0ooKwO0PoinNJCcApFEASKMAkHa4ANz/I6qSbHICQBoFgDQKAGmpC7D3qy+hK20BlvBTgnIKc5eyAJcLp7CQ3lQ2kHQFuLVg2RfSk9IGkqoAWwuVeSG9qG0gaQqwd4GyLqQHxQ0kRQGOLkzGhayluoFMX4DSBcm2kDWUN5DpC1DzExQyLWQp9Q1k+gKYUYJSNR97lh/dkqIAZpTgKML/Ik0BzCjBXoT/VaoCmFGCLYT/XLoCmFGCWwj/r1IWwIwSXCL816UtgBklWBD+21IXwIwSEP516QtgplsCwr9NogBmeiUg/PvIFMBMpwSEfz+pApjlLwHhP0auAGZ5S0D4j5MsgFm+EhD+MrIFMMtTAsJfTroAZvOXgPDXkS+A2bwlIPz1KMBPs5WA8PugACdmKQHh90MBLkQvAeH3RQGuiFoCwu+PAtwQrQSEvw0KsCJKCQh/OxRgw+gSEP627o7+B9VfkhfhodcRquF/fnw6lGlOgJ1mCtRMYx3tzegBzOT+4VP1SfD1+8Pq3/9x/6Xq+oT/GG6BCpSUYCv4l0qKQPiP3wJRgEJ7S3A0+Jf2FoHwv+A9QCd7Alcb/r3XIPzlKECFteB5hH/PtQh/HQpQ6VoAPcO/dk3CX48CQBoFcNZi9+9xbVVhngPM9qQ1gpnnLMrtGyeAox47NKeALwoAaRQA0igApFEASKMAkEYBII0CQBoFcFT7zSxRXkNJmCfBUZ4Mlhj1RHbmOYuCE8BZyx2a3d8fBYC0MLdAo73797/i//vxz4+OI1l9pbM/vau82j+/v628wvw4Aawu/DNT/bhPSZ8ABOB1DlRPA04ASJMtALv/OdX5kCyA6mJvUZwXyQIACwoAaRQA0igApFEASJMsgOpDny2K8yJZADPNxV6jOh+yBQDMxL8WaNn1FB8ALVR3/gUngJl9++vb6CEMoR5+M/ETwOz12xlLSnD0WxL3futkq+t6vFY20idAluCM/mXeM5MtQJbwLyhBGckCZAv/ghIcJ1eArOFfUIJjpAqQPfwLSrCfTAFUwr+gBPtIFEAt/AtKsC19AVTDv6AE61IXQD38C0pwW9oCEP5zlOC6lAUg/NdRgl+lKwDhX0cJzqUqAOHfhxK8SlMAwn8MJXiRogCEvwwlSFAAwl+ndA6yzN30BVBfQA9H5yLT3E1fADPtBfSyd06yzV2KApjpLqCnrbnJOHdpCmCmuYDebs1R1rlLVQAzvQVs4XKuMs9dugKYaS1gK8ucZZ+7lAUw01nAlhTmLm0BzDQWEHVSFwDYQgEgjQJA2uECPD8+3bUYCFCrJJucAJBGASCNAkBaUQF4H4BoSjPJCQBpFADSigvAbRCiqMkiJwCkVRWAUwCj1WZQ/rdE9sRXp8ZTfQvEKYBRPLLHewBIcykApwB688ocJwCkuRWAUwC9eGbN9QSgBGjNO2Put0CUAK20yBbvASCtSQE4BeCtVaaanQCUAF5aZqnpLRAlQK3WGWr+HoASoFSP7HQN5/vPH370fD3Mqeem2fWzQJwG2NI7I90/DUoJcMuIbAwNI7dEMBu7KYbYjSmCpgh3A8MHcIoiaIgQ/EWYgZyiCDlFCv4i3IAuUYa5RQz9qdCDu4ZCxBY98AAAAAAAAAAAAAAAAABy+h920Xe4HxLhzAAAAABJRU5ErkJggg==">
+<link rel="manifest" href="manifest.json">
+<title>Drone Flight Log</title>
+<style>
+:root {
+  --bg: #f4f6f3;
+  --card: #ffffff;
+  --text: #1a1f1a;
+  --muted: #5a655a;
+  --border: #d5ddd5;
+  --accent: #225533;
+  --accent-2: #3a7a4a;
+  --danger: #b33a2e;
+  --warn: #a67c00;
+  --tab-bg: rgba(255,255,255,0.92);
+  --input-bg: #f8faf8;
+  --shadow: 0 1px 3px rgba(0,0,0,.08);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+  --tab-h: 56px;
+  --radius: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1410;
+    --card: #1a221c;
+    --text: #e8efe8;
+    --muted: #9aaa9a;
+    --border: #2e3a30;
+    --accent: #4caf6a;
+    --accent-2: #6bc87e;
+    --danger: #e57368;
+    --warn: #e0b84a;
+    --tab-bg: rgba(18,24,20,0.94);
+    --input-bg: #141a16;
+    --shadow: 0 1px 4px rgba(0,0,0,.4);
+  }
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg); color: var(--text);
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  padding-top: var(--safe-t);
+  padding-bottom: calc(var(--tab-h) + var(--safe-b) + 8px);
+}
+h1,h2,h3 { margin: 0 0 .5rem; font-weight: 650; }
+.header {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--bg);
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.header h1 { font-size: 1.25rem; }
+.header .sub { color: var(--muted); font-size: .85rem; }
+.view { display: none; padding: 12px 16px 24px; }
+.view.active { display: block; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+.row > * { flex: 1 1 120px; }
+label {
+  display: block; font-size: .78rem; color: var(--muted);
+  margin: 0 0 4px; font-weight: 560;
+}
+input, select, textarea, button {
+  font-size: 16px; /* prevent iOS zoom */
+  font-family: inherit;
+}
+input[type="text"], input[type="date"], input[type="time"], input[type="number"],
+input[type="email"], input[type="search"], select, textarea {
+  width: 100%;
+  padding: 12px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text);
+  margin-bottom: 12px;
+  outline: none;
+}
+textarea { min-height: 72px; resize: vertical; }
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 12px 16px;
+  border-radius: 12px; border: none;
+  background: var(--accent); color: #fff; font-weight: 600;
+  cursor: pointer; width: 100%;
+}
+.btn:active { opacity: .85; transform: scale(.98); }
+.btn.secondary {
+  background: transparent; color: var(--accent);
+  border: 1.5px solid var(--accent);
+}
+.btn.danger { background: var(--danger); color: #fff; }
+.btn.ghost {
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--border); width: auto; min-height: 40px; padding: 8px 12px;
+}
+.btn.small { min-height: 40px; padding: 8px 12px; width: auto; font-size: .9rem; }
+.btn-row { display: flex; gap: 8px; margin-top: 4px; }
+.btn-row .btn { flex: 1; }
+.seg {
+  display: flex; background: var(--input-bg); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin-bottom: 12px;
+}
+.seg button {
+  flex: 1; border: none; background: transparent; color: var(--muted);
+  padding: 12px; font-weight: 600; cursor: pointer;
+}
+.seg button.on { background: var(--accent); color: #fff; }
+.hint { font-size: .8rem; color: var(--muted); margin: 4px 0 12px; }
+.warn-box {
+  background: color-mix(in srgb, var(--warn) 15%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--warn) 40%, var(--border));
+  color: var(--text); border-radius: 10px; padding: 12px; font-size: .88rem;
+  margin: 8px 0 12px;
+}
+.flight-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer;
+}
+.flight-item:last-child { border-bottom: none; }
+.flight-item .main { flex: 1; min-width: 0; }
+.flight-item .type { font-weight: 650; }
+.flight-item .meta { color: var(--muted); font-size: .85rem; margin-top: 2px; }
+.flight-item .hours {
+  font-variant-numeric: tabular-nums; font-weight: 700;
+  color: var(--accent); white-space:nowrap;
+}
+.stat-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.stat {
+  background: var(--input-bg); border-radius: 10px; padding: 12px;
+  border: 1px solid var(--border);
+}
+.stat .v { font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat .l { font-size: .75rem; color: var(--muted); margin-top: 2px; }
+.bar-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+.bar-row .lbl { width: 56px; font-size: .75rem; color: var(--muted); flex-shrink: 0; }
+.bar-row .track {
+  flex: 1; height: 18px; background: var(--input-bg);
+  border-radius: 6px; overflow: hidden; border: 1px solid var(--border);
+}
+.bar-row .fill { height: 100%; background: var(--accent-2); border-radius: 5px; min-width: 2px; }
+.bar-row .val { width: 52px; text-align: right; font-size: .8rem; font-variant-numeric: tabular-nums; }
+.empty {
+  text-align: center; color: var(--muted); padding: 32px 12px; font-size: .95rem;
+}
+.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  display: flex; height: calc(var(--tab-h) + var(--safe-b));
+  padding-bottom: var(--safe-b);
+  background: var(--tab-bg);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.tabs button {
+  flex: 1; border: none; background: transparent; color: var(--muted);
+  font-size: .7rem; font-weight: 600; padding: 6px 2px 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  cursor: pointer;
+}
+.tabs button svg { width: 24px; height: 24px; }
+.tabs button.on { color: var(--accent); }
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 40;
+  display: none; align-items: flex-end; justify-content: center;
+}
+.modal-backdrop.show { display: flex; }
+.modal {
+  background: var(--card); width: 100%; max-width: 520px;
+  border-radius: 16px 16px 0 0; padding: 16px 16px calc(16px + var(--safe-b));
+  max-height: 90vh; overflow: auto;
+}
+.modal h2 { font-size: 1.1rem; margin-bottom: 12px; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chip {
+  padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--input-bg); font-size: .85rem; cursor: pointer; color: var(--text);
+}
+.chip.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.type-item {
+  display: flex; align-items: center; gap: 8px; padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.type-item .name { flex: 1; font-weight: 600; }
+#toast {
+  position: fixed; left: 50%; bottom: calc(var(--tab-h) + var(--safe-b) + 16px);
+  transform: translateX(-50%) translateY(20px); opacity: 0;
+  background: #222; color: #fff; padding: 10px 16px; border-radius: 999px;
+  font-size: .9rem; z-index: 50; pointer-events: none; transition: .25s;
+  max-width: 90%; text-align: center;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.filters { margin-bottom: 8px; }
+.hidden { display: none !important; }
+#csvPreviewTable table th, #csvPreviewTable table td {
+  text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--border); vertical-align: top;
+}
+#csvMapFields label { margin-top: 4px; }
+
+canvas.chart { width: 100%; height: 160px; display: block; }
+.field-group { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1 id="hdrTitle">Flight Log</h1>
+  <div class="sub" id="hdrSub">sUAS hours by type &amp; date</div>
+</div>
+
+<!-- LOG -->
+<section id="view-log" class="view active">
+  <div class="card filters">
+    <input type="search" id="logSearch" placeholder="Search notes, location, serial…" autocomplete="off">
+    <div class="row">
+      <div>
+        <label>Type</label>
+        <select id="filterType"><option value="">All types</option></select>
+      </div>
+      <div>
+        <label>From</label>
+        <input type="date" id="filterFrom">
+      </div>
+      <div>
+        <label>To</label>
+        <input type="date" id="filterTo">
+      </div>
+    </div>
+  </div>
+  <div class="card" id="logList"><div class="empty">No flights yet. Tap Add.</div></div>
+</section>
+
+<!-- ADD / EDIT -->
+<section id="view-add" class="view">
+  <div class="card">
+    <input type="hidden" id="editId">
+    <label>Date</label>
+    <input type="date" id="fDate">
+
+    <label>Drone type</label>
+    <select id="fType"></select>
+    <div class="btn-row" style="margin-bottom:12px">
+      <button type="button" class="btn ghost small" id="btnNewType">+ New type</button>
+    </div>
+
+    <label>Duration entry</label>
+    <div class="seg" id="durMode">
+      <button type="button" data-mode="hm" class="on">Hours + min</button>
+      <button type="button" data-mode="range">Start / end</button>
+    </div>
+    <div id="durHM">
+      <div class="row">
+        <div>
+          <label>Hours</label>
+          <input type="number" id="fHours" min="0" max="24" step="1" value="0" inputmode="numeric">
+        </div>
+        <div>
+          <label>Minutes</label>
+          <input type="number" id="fMinutes" min="0" max="59" step="1" value="0" inputmode="numeric">
+        </div>
+      </div>
+    </div>
+    <div id="durRange" class="hidden">
+      <div class="row">
+        <div>
+          <label>Start</label>
+          <input type="time" id="fStart">
+        </div>
+        <div>
+          <label>End</label>
+          <input type="time" id="fEnd">
+        </div>
+      </div>
+      <p class="hint">Overnight flights: end after midnight counts correctly.</p>
+    </div>
+
+    <label>Aircraft / serial / tail # <span style="font-weight:400">(optional)</span></label>
+    <input type="text" id="fSerial" placeholder="e.g. SN-12345" autocomplete="off">
+
+    <label>Location <span style="font-weight:400">(optional)</span></label>
+    <input type="text" id="fLocation" placeholder="Range / AO" autocomplete="off">
+
+    <label>Mission / purpose <span style="font-weight:400">(optional)</span></label>
+    <input type="text" id="fMission" placeholder="Training, recon…" autocomplete="off">
+
+    <div class="row">
+      <div>
+        <label>Pilot role</label>
+        <select id="fRole">
+          <option value="">—</option>
+          <option>PIC</option>
+          <option>VO</option>
+          <option>Instructor</option>
+          <option>Student</option>
+        </select>
+      </div>
+      <div>
+        <label>Day / Night</label>
+        <select id="fDayNight">
+          <option value="Day">Day</option>
+          <option value="Night">Night</option>
+          <option value="Mixed">Mixed</option>
+        </select>
+      </div>
+    </div>
+
+    <label>Notes</label>
+    <textarea id="fNotes" placeholder="Optional notes"></textarea>
+
+    <div class="btn-row">
+      <button type="button" class="btn" id="btnSaveFlight">Save flight</button>
+    </div>
+    <div class="btn-row hidden" id="editActions">
+      <button type="button" class="btn danger" id="btnDeleteFlight">Delete</button>
+      <button type="button" class="btn secondary" id="btnCancelEdit">Cancel</button>
+    </div>
+  </div>
+</section>
+
+<!-- TOTALS -->
+<section id="view-totals" class="view">
+  <div class="card">
+    <div class="stat-grid" id="statGrid"></div>
+  </div>
+  <div class="card">
+    <h3>Hours by type</h3>
+    <div id="byType"></div>
+  </div>
+  <div class="card">
+    <h3>Hours by month</h3>
+    <canvas class="chart" id="monthChart" width="360" height="160"></canvas>
+    <div id="monthBars"></div>
+  </div>
+  <div class="card">
+    <button type="button" class="btn" id="btnEmailExportTotals">Email Export</button>
+    <p class="hint">Tap Mail in the share sheet</p>
+    <button type="button" class="btn secondary" id="btnCsvExportTotals" style="margin-top:8px">Download CSV</button>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="view-settings" class="view">
+  <div class="card">
+    <h3>Drone types</h3>
+    <div id="typeList"></div>
+    <div class="row" style="margin-top:8px">
+      <input type="text" id="newTypeName" placeholder="New type name" style="margin-bottom:0">
+      <button type="button" class="btn small" id="btnAddType" style="flex:0 0 auto;width:auto">Add</button>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Backup &amp; export</h3>
+    <div class="warn-box">
+      iOS Safari may clear site data if this page goes unused for a long time. Export a JSON backup periodically and keep a copy in Files or email.
+    </div>
+    <button type="button" class="btn" id="btnEmailExportSettings">Email Export</button>
+    <p class="hint">Tap Mail in the share sheet</p>
+    <div class="btn-row" style="margin-top:8px">
+      <button type="button" class="btn secondary" id="btnExportCsv">CSV</button>
+      <button type="button" class="btn secondary" id="btnExportJson">JSON backup</button>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn secondary" id="btnImportJson">Import JSON</button>
+      <button type="button" class="btn secondary" id="btnImportCsv">Import CSV</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json,.json" class="hidden">
+    <input type="file" id="importCsvFile" accept=".csv,text/csv,text/plain" class="hidden">
+    <div class="seg" id="importMode" style="margin-top:8px">
+      <button type="button" data-mode="merge" class="on">Merge</button>
+      <button type="button" data-mode="replace">Replace</button>
+    </div>
+    <p class="hint">Merge keeps existing flights; Replace wipes then loads the file. Applies to JSON and CSV.</p>
+    <p class="hint">Excel (.xlsx) is not supported in the browser. In Excel/Numbers choose <strong>File → Save As → CSV</strong> (UTF-8), then Import CSV.</p>
+  </div>
+  <div class="card">
+    <h3>About</h3>
+    <p class="hint" style="margin:0">Drone Flight Log — offline PWA. Data stays on this device in localStorage. Add to Home Screen from Safari Share → Add to Home Screen.</p>
+  </div>
+</section>
+
+<nav class="tabs" aria-label="Main">
+  <button type="button" data-tab="log" class="on" aria-label="Log">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+    Log
+  </button>
+  <button type="button" data-tab="add" aria-label="Add">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+    Add
+  </button>
+  <button type="button" data-tab="totals" aria-label="Totals">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16M8 17V10M12 17V7M16 17v-4"/></svg>
+    Totals
+  </button>
+  <button type="button" data-tab="settings" aria-label="Settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    Settings
+  </button>
+</nav>
+
+<div class="modal-backdrop" id="confirmModal">
+  <div class="modal">
+    <h2 id="confirmTitle">Confirm</h2>
+    <p id="confirmMsg" class="hint"></p>
+    <div class="btn-row">
+      <button type="button" class="btn secondary" id="confirmCancel">Cancel</button>
+      <button type="button" class="btn danger" id="confirmOk">Delete</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-backdrop" id="csvMapModal">
+  <div class="modal" style="max-height:92vh">
+    <h2>Map CSV columns</h2>
+    <p class="hint" id="csvMapInfo">Match your spreadsheet columns to flight fields.</p>
+    <div id="csvMapFields"></div>
+    <div class="card" style="margin-top:8px;padding:10px">
+      <div id="csvPreviewStats" style="font-weight:600;margin-bottom:6px"></div>
+      <div id="csvPreviewTable" style="overflow:auto;max-height:160px;font-size:.78rem"></div>
+    </div>
+    <p class="hint">Duplicates (same date + type + duration + notes) are skipped. New drone types are added automatically.</p>
+    <div class="btn-row">
+      <button type="button" class="btn secondary" id="csvMapCancel">Cancel</button>
+      <button type="button" class="btn" id="csvMapConfirm">Import</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /*
+   * JSON backup / import format (droneFlightLog.v1)
+   * -----------------------------------------------
+   * {
+   *   "version": 1,
+   *   "exportedAt": "2026-11-05T21:00:00.000Z",   // optional ISO timestamp
+   *   "types": ["RQ-11 Raven", "RQ-20 Puma"],      // drone type names
+   *   "flights": [
+   *     {
+   *       "id": "f_unique",                         // optional on import; auto-generated if missing
+   *       "date": "2026-11-05",                     // REQUIRED YYYY-MM-DD
+   *       "type": "RQ-11 Raven",                    // REQUIRED aircraft / platform name
+   *       "minutes": 75,                            // REQUIRED integer duration in minutes
+   *       "durationMode": "hm",                     // optional: "hm" | "range"
+   *       "startTime": "",                          // optional "HH:MM"
+   *       "endTime": "",
+   *       "serial": "",                             // aircraft / tail / serial
+   *       "location": "",
+   *       "mission": "",
+   *       "role": "PIC",                            // PIC | VO | Instructor | Student | ""
+   *       "dayNight": "Day",                        // Day | Night | Mixed
+   *       "notes": "",
+   *       "createdAt": "2026-11-05T21:00:00.000Z",  // optional
+   *       "updatedAt": "2026-11-05T21:00:00.000Z"   // optional
+   *     }
+   *   ]
+   * }
+   * A bare array of flight objects is also accepted on import.
+   * Generate this from an Excel sheet offline, then Import JSON (Merge or Replace).
+   */
+  var STORAGE_KEY = 'droneFlightLog.v1';
+  var DEFAULT_TYPES = ['RQ-11 Raven', 'RQ-20 Puma', 'Skydio X2', 'DJI Mavic', 'Other'];
+
+  function uid() {
+    return 'f_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+  }
+
+  function todayISO() {
+    var d = new Date();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return d.getFullYear() + '-' + m + '-' + day;
+  }
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        return { types: DEFAULT_TYPES.slice(), flights: [], version: 1 };
+      }
+      var s = JSON.parse(raw);
+      if (!Array.isArray(s.types)) s.types = DEFAULT_TYPES.slice();
+      if (!Array.isArray(s.flights)) s.flights = [];
+      return s;
+    } catch (e) {
+      return { types: DEFAULT_TYPES.slice(), flights: [], version: 1 };
+    }
+  }
+
+  function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  var state = loadState();
+
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { el.classList.remove('show'); }, 2200);
+  }
+
+  function minutesFromHM(h, m) {
+    h = parseInt(h, 10) || 0;
+    m = parseInt(m, 10) || 0;
+    if (m < 0) m = 0;
+    if (m > 59) m = 59;
+    if (h < 0) h = 0;
+    return h * 60 + m;
+  }
+
+  function minutesFromRange(start, end) {
+    if (!start || !end) return 0;
+    var a = start.split(':').map(Number);
+    var b = end.split(':').map(Number);
+    var s = a[0] * 60 + a[1];
+    var e = b[0] * 60 + b[1];
+    if (e < s) e += 24 * 60; // overnight
+    return e - s;
+  }
+
+  function fmtHMM(mins) {
+    mins = Math.round(mins) || 0;
+    var neg = mins < 0;
+    mins = Math.abs(mins);
+    var h = Math.floor(mins / 60);
+    var m = mins % 60;
+    return (neg ? '-' : '') + h + ':' + String(m).padStart(2, '0');
+  }
+
+  function fmtDec(mins) {
+    return ((Math.round(mins) || 0) / 60).toFixed(2);
+  }
+
+  function parseISODate(s) {
+    if (!s) return null;
+    var p = s.split('-').map(Number);
+    return new Date(p[0], p[1] - 1, p[2]);
+  }
+
+  /* ---------- Tabs ---------- */
+  var titles = {
+    log: ['Flight Log', 'All logged flights'],
+    add: ['Add flight', 'Date, type & duration'],
+    totals: ['Totals', 'Hours by type & period'],
+    settings: ['Settings', 'Types, backup & export']
+  };
+
+  function showTab(name) {
+    document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
+    document.querySelectorAll('.tabs button').forEach(function (b) {
+      b.classList.toggle('on', b.getAttribute('data-tab') === name);
+    });
+    var view = document.getElementById('view-' + name);
+    if (view) view.classList.add('active');
+    var t = titles[name] || titles.log;
+    document.getElementById('hdrTitle').textContent = t[0];
+    document.getElementById('hdrSub').textContent = t[1];
+    if (name === 'log') renderLog();
+    if (name === 'add') prepareAddForm(false);
+    if (name === 'totals') renderTotals();
+    if (name === 'settings') renderTypes();
+  }
+
+  document.querySelectorAll('.tabs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      showTab(b.getAttribute('data-tab'));
+    });
+  });
+
+  /* ---------- Types ---------- */
+  function fillTypeSelects() {
+    var opts = state.types.map(function (t) {
+      return '<option value="' + escapeAttr(t) + '">' + escapeHtml(t) + '</option>';
+    }).join('');
+    var fType = document.getElementById('fType');
+    var cur = fType.value;
+    fType.innerHTML = opts || '<option value="">—</option>';
+    if (cur && state.types.indexOf(cur) >= 0) fType.value = cur;
+
+    var filter = document.getElementById('filterType');
+    var fcur = filter.value;
+    filter.innerHTML = '<option value="">All types</option>' + opts;
+    if (fcur) filter.value = fcur;
+  }
+
+  function renderTypes() {
+    fillTypeSelects();
+    var list = document.getElementById('typeList');
+    if (!state.types.length) {
+      list.innerHTML = '<div class="empty">No types yet</div>';
+      return;
+    }
+    list.innerHTML = state.types.map(function (t, i) {
+      return '<div class="type-item" data-i="' + i + '">' +
+        '<span class="name">' + escapeHtml(t) + '</span>' +
+        '<button type="button" class="btn ghost small" data-act="rename">Rename</button>' +
+        '<button type="button" class="btn ghost small" data-act="del">Delete</button>' +
+        '</div>';
+    }).join('');
+  }
+
+  document.getElementById('btnAddType').addEventListener('click', function () {
+    addTypeFromInput(document.getElementById('newTypeName'));
+  });
+  document.getElementById('btnNewType').addEventListener('click', function () {
+    var name = prompt('New drone type name:');
+    if (!name) return;
+    name = name.trim();
+    if (!name) return;
+    if (state.types.indexOf(name) >= 0) {
+      document.getElementById('fType').value = name;
+      toast('Type already exists');
+      return;
+    }
+    state.types.push(name);
+    saveState();
+    fillTypeSelects();
+    document.getElementById('fType').value = name;
+    toast('Type added');
+  });
+
+  function addTypeFromInput(input) {
+    var name = (input.value || '').trim();
+    if (!name) { toast('Enter a type name'); return; }
+    if (state.types.indexOf(name) >= 0) { toast('Already exists'); return; }
+    state.types.push(name);
+    saveState();
+    input.value = '';
+    renderTypes();
+    toast('Type added');
+  }
+
+  document.getElementById('typeList').addEventListener('click', function (e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    var item = btn.closest('.type-item');
+    var i = parseInt(item.getAttribute('data-i'), 10);
+    var act = btn.getAttribute('data-act');
+    var old = state.types[i];
+    if (act === 'rename') {
+      var n = prompt('Rename type:', old);
+      if (!n) return;
+      n = n.trim();
+      if (!n || n === old) return;
+      if (state.types.indexOf(n) >= 0) { toast('Name in use'); return; }
+      state.types[i] = n;
+      state.flights.forEach(function (f) { if (f.type === old) f.type = n; });
+      saveState();
+      renderTypes();
+      toast('Renamed');
+    } else if (act === 'del') {
+      confirmDialog('Delete type?', 'Flights keep the old type name as text. Continue?', function () {
+        state.types.splice(i, 1);
+        saveState();
+        renderTypes();
+        toast('Deleted');
+      });
+    }
+  });
+
+  /* ---------- Duration mode ---------- */
+  document.getElementById('durMode').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    document.querySelectorAll('#durMode button').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    var mode = b.getAttribute('data-mode');
+    document.getElementById('durHM').classList.toggle('hidden', mode !== 'hm');
+    document.getElementById('durRange').classList.toggle('hidden', mode !== 'range');
+  });
+
+  function currentDurMode() {
+    var on = document.querySelector('#durMode button.on');
+    return on ? on.getAttribute('data-mode') : 'hm';
+  }
+
+  /* ---------- Add / Edit ---------- */
+  function prepareAddForm(isEdit) {
+    fillTypeSelects();
+    document.getElementById('editActions').classList.toggle('hidden', !isEdit);
+    document.getElementById('btnSaveFlight').textContent = isEdit ? 'Update flight' : 'Save flight';
+    if (!isEdit) {
+      document.getElementById('editId').value = '';
+      document.getElementById('fDate').value = todayISO();
+      document.getElementById('fHours').value = '0';
+      document.getElementById('fMinutes').value = '0';
+      document.getElementById('fStart').value = '';
+      document.getElementById('fEnd').value = '';
+      document.getElementById('fSerial').value = '';
+      document.getElementById('fLocation').value = '';
+      document.getElementById('fMission').value = '';
+      document.getElementById('fRole').value = '';
+      document.getElementById('fDayNight').value = 'Day';
+      document.getElementById('fNotes').value = '';
+      document.querySelectorAll('#durMode button').forEach(function (x) {
+        x.classList.toggle('on', x.getAttribute('data-mode') === 'hm');
+      });
+      document.getElementById('durHM').classList.remove('hidden');
+      document.getElementById('durRange').classList.add('hidden');
+      if (state.types.length) document.getElementById('fType').value = state.types[0];
+    }
+  }
+
+  function openEdit(id) {
+    var f = state.flights.find(function (x) { return x.id === id; });
+    if (!f) return;
+    showTab('add');
+    prepareAddForm(true);
+    document.getElementById('editId').value = f.id;
+    document.getElementById('fDate').value = f.date;
+    if (state.types.indexOf(f.type) < 0) {
+      state.types.push(f.type);
+      fillTypeSelects();
+    }
+    document.getElementById('fType').value = f.type;
+    var mins = f.minutes || 0;
+    document.getElementById('fHours').value = String(Math.floor(mins / 60));
+    document.getElementById('fMinutes').value = String(mins % 60);
+    document.getElementById('fStart').value = f.startTime || '';
+    document.getElementById('fEnd').value = f.endTime || '';
+    if (f.durationMode === 'range') {
+      document.querySelectorAll('#durMode button').forEach(function (x) {
+        x.classList.toggle('on', x.getAttribute('data-mode') === 'range');
+      });
+      document.getElementById('durHM').classList.add('hidden');
+      document.getElementById('durRange').classList.remove('hidden');
+    }
+    document.getElementById('fSerial').value = f.serial || '';
+    document.getElementById('fLocation').value = f.location || '';
+    document.getElementById('fMission').value = f.mission || '';
+    document.getElementById('fRole').value = f.role || '';
+    document.getElementById('fDayNight').value = f.dayNight || 'Day';
+    document.getElementById('fNotes').value = f.notes || '';
+  }
+
+  document.getElementById('btnSaveFlight').addEventListener('click', function () {
+    var date = document.getElementById('fDate').value;
+    var type = document.getElementById('fType').value;
+    if (!date) { toast('Pick a date'); return; }
+    if (!type) { toast('Pick a drone type'); return; }
+    var mode = currentDurMode();
+    var minutes = 0;
+    var startTime = '', endTime = '';
+    if (mode === 'hm') {
+      minutes = minutesFromHM(document.getElementById('fHours').value, document.getElementById('fMinutes').value);
+    } else {
+      startTime = document.getElementById('fStart').value;
+      endTime = document.getElementById('fEnd').value;
+      minutes = minutesFromRange(startTime, endTime);
+    }
+    if (minutes <= 0) { toast('Duration must be > 0'); return; }
+
+    var editId = document.getElementById('editId').value;
+    var flight = {
+      id: editId || uid(),
+      date: date,
+      type: type,
+      minutes: minutes,
+      durationMode: mode,
+      startTime: startTime,
+      endTime: endTime,
+      serial: document.getElementById('fSerial').value.trim(),
+      location: document.getElementById('fLocation').value.trim(),
+      mission: document.getElementById('fMission').value.trim(),
+      role: document.getElementById('fRole').value,
+      dayNight: document.getElementById('fDayNight').value,
+      notes: document.getElementById('fNotes').value.trim(),
+      updatedAt: new Date().toISOString()
+    };
+    if (editId) {
+      var idx = state.flights.findIndex(function (x) { return x.id === editId; });
+      if (idx >= 0) state.flights[idx] = flight;
+      else state.flights.push(flight);
+      toast('Flight updated');
+    } else {
+      flight.createdAt = flight.updatedAt;
+      state.flights.push(flight);
+      toast('Flight saved');
+    }
+    saveState();
+    showTab('log');
+  });
+
+  document.getElementById('btnCancelEdit').addEventListener('click', function () {
+    prepareAddForm(false);
+    showTab('log');
+  });
+
+  document.getElementById('btnDeleteFlight').addEventListener('click', function () {
+    var id = document.getElementById('editId').value;
+    if (!id) return;
+    confirmDialog('Delete flight?', 'This cannot be undone.', function () {
+      state.flights = state.flights.filter(function (f) { return f.id !== id; });
+      saveState();
+      toast('Deleted');
+      showTab('log');
+    });
+  });
+
+  /* ---------- Confirm ---------- */
+  var confirmCb = null;
+  function confirmDialog(title, msg, cb) {
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMsg').textContent = msg;
+    document.getElementById('confirmModal').classList.add('show');
+    confirmCb = cb;
+  }
+  document.getElementById('confirmCancel').addEventListener('click', function () {
+    document.getElementById('confirmModal').classList.remove('show');
+    confirmCb = null;
+  });
+  document.getElementById('confirmOk').addEventListener('click', function () {
+    document.getElementById('confirmModal').classList.remove('show');
+    var cb = confirmCb; confirmCb = null;
+    if (cb) cb();
+  });
+
+  /* ---------- Log list / filters ---------- */
+  function getFilteredFlights() {
+    var q = (document.getElementById('logSearch').value || '').trim().toLowerCase();
+    var type = document.getElementById('filterType').value;
+    var from = document.getElementById('filterFrom').value;
+    var to = document.getElementById('filterTo').value;
+    return state.flights.filter(function (f) {
+      if (type && f.type !== type) return false;
+      if (from && f.date < from) return false;
+      if (to && f.date > to) return false;
+      if (q) {
+        var blob = [f.type, f.serial, f.location, f.mission, f.notes, f.role, f.dayNight].join(' ').toLowerCase();
+        if (blob.indexOf(q) < 0) return false;
+      }
+      return true;
+    }).sort(function (a, b) {
+      if (a.date !== b.date) return a.date < b.date ? 1 : -1;
+      return (b.updatedAt || '').localeCompare(a.updatedAt || '');
+    });
+  }
+
+  function renderLog() {
+    fillTypeSelects();
+    var list = getFilteredFlights();
+    var el = document.getElementById('logList');
+    if (!list.length) {
+      el.innerHTML = '<div class="empty">' + (state.flights.length ? 'No flights match filters.' : 'No flights yet. Tap Add.') + '</div>';
+      return;
+    }
+    el.innerHTML = list.map(function (f) {
+      var meta = [f.date, f.dayNight, f.role, f.location].filter(Boolean).join(' · ');
+      return '<div class="flight-item" data-id="' + escapeAttr(f.id) + '">' +
+        '<div class="main"><div class="type">' + escapeHtml(f.type) + '</div>' +
+        '<div class="meta">' + escapeHtml(meta) + (f.serial ? ' · ' + escapeHtml(f.serial) : '') + '</div>' +
+        (f.mission || f.notes ? '<div class="meta">' + escapeHtml(f.mission || f.notes) + '</div>' : '') +
+        '</div><div class="hours">' + fmtHMM(f.minutes) + '<div class="meta">' + fmtDec(f.minutes) + 'h</div></div></div>';
+    }).join('');
+  }
+
+  document.getElementById('logList').addEventListener('click', function (e) {
+    var item = e.target.closest('.flight-item');
+    if (!item) return;
+    openEdit(item.getAttribute('data-id'));
+  });
+
+  ['logSearch', 'filterType', 'filterFrom', 'filterTo'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', renderLog);
+    document.getElementById(id).addEventListener('change', renderLog);
+  });
+
+  /* ---------- Totals ---------- */
+  function sumMinutes(flights) {
+    return flights.reduce(function (a, f) { return a + (f.minutes || 0); }, 0);
+  }
+
+  function startOfMonth(d) {
+    return new Date(d.getFullYear(), d.getMonth(), 1);
+  }
+
+  function daysAgo(n) {
+    var d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() - n);
+    return d;
+  }
+
+  function renderTotals() {
+    var all = state.flights.slice();
+    var now = new Date();
+    now.setHours(0, 0, 0, 0);
+    var thisMonthStart = startOfMonth(now);
+    var last30 = daysAgo(30);
+    var last90 = daysAgo(90);
+    var yearStart = new Date(now.getFullYear(), 0, 1);
+
+    function inRange(f, fromDate) {
+      var d = parseISODate(f.date);
+      return d && d >= fromDate;
+    }
+
+    var total = sumMinutes(all);
+    var mMonth = sumMinutes(all.filter(function (f) { return inRange(f, thisMonthStart); }));
+    var m30 = sumMinutes(all.filter(function (f) { return inRange(f, last30); }));
+    var m90 = sumMinutes(all.filter(function (f) { return inRange(f, last90); }));
+    var mYear = sumMinutes(all.filter(function (f) { return inRange(f, yearStart); }));
+
+    document.getElementById('statGrid').innerHTML =
+      stat('Total hours', fmtHMM(total), fmtDec(total) + ' h') +
+      stat('Flights', String(all.length), 'logged') +
+      stat('This month', fmtHMM(mMonth), fmtDec(mMonth) + ' h') +
+      stat('Last 30 days', fmtHMM(m30), fmtDec(m30) + ' h') +
+      stat('Last 90 days', fmtHMM(m90), fmtDec(m90) + ' h') +
+      stat('This year', fmtHMM(mYear), fmtDec(mYear) + ' h');
+
+    // by type
+    var byType = {};
+    all.forEach(function (f) {
+      byType[f.type] = (byType[f.type] || 0) + (f.minutes || 0);
+    });
+    var types = Object.keys(byType).sort(function (a, b) { return byType[b] - byType[a]; });
+    var maxT = types.length ? byType[types[0]] : 1;
+    var byEl = document.getElementById('byType');
+    if (!types.length) {
+      byEl.innerHTML = '<div class="empty">No data yet</div>';
+    } else {
+      byEl.innerHTML = types.map(function (t) {
+        var pct = Math.max(2, Math.round(100 * byType[t] / maxT));
+        return '<div class="bar-row"><div class="lbl" style="width:auto;min-width:72px;max-width:40%">' + escapeHtml(t) +
+          '</div><div class="track"><div class="fill" style="width:' + pct + '%"></div></div>' +
+          '<div class="val">' + fmtHMM(byType[t]) + '</div></div>';
+      }).join('');
+    }
+
+    // by month last 12
+    var months = [];
+    for (var i = 11; i >= 0; i--) {
+      var d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      var key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+      months.push({ key: key, label: d.toLocaleString(undefined, { month: 'short' }), mins: 0, year: d.getFullYear() });
+    }
+    all.forEach(function (f) {
+      if (!f.date || f.date.length < 7) return;
+      var key = f.date.slice(0, 7);
+      for (var j = 0; j < months.length; j++) {
+        if (months[j].key === key) { months[j].mins += f.minutes || 0; break; }
+      }
+    });
+    var maxM = Math.max(1, Math.max.apply(null, months.map(function (m) { return m.mins; })));
+    document.getElementById('monthBars').innerHTML = months.map(function (m) {
+      var pct = Math.round(100 * m.mins / maxM);
+      return '<div class="bar-row"><div class="lbl">' + escapeHtml(m.label) + '</div>' +
+        '<div class="track"><div class="fill" style="width:' + (m.mins ? Math.max(2, pct) : 0) + '%"></div></div>' +
+        '<div class="val">' + (m.mins ? fmtHMM(m.mins) : '—') + '</div></div>';
+    }).join('');
+
+    drawMonthChart(months, maxM);
+  }
+
+  function stat(l, v, sub) {
+    return '<div class="stat"><div class="v">' + escapeHtml(v) + '</div><div class="l">' +
+      escapeHtml(l) + (sub ? ' · ' + escapeHtml(sub) : '') + '</div></div>';
+  }
+
+  function drawMonthChart(months, maxM) {
+    var canvas = document.getElementById('monthChart');
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width, h = canvas.height;
+    var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    ctx.clearRect(0, 0, w, h);
+    var padL = 8, padR = 8, padT = 10, padB = 24;
+    var n = months.length;
+    var gap = 4;
+    var barW = (w - padL - padR - gap * (n - 1)) / n;
+    var accent = dark ? '#6bc87e' : '#3a7a4a';
+    var muted = dark ? '#9aaa9a' : '#5a655a';
+    ctx.font = '10px -apple-system, sans-serif';
+    ctx.fillStyle = muted;
+    months.forEach(function (m, i) {
+      var x = padL + i * (barW + gap);
+      var bh = maxM ? ((h - padT - padB) * m.mins / maxM) : 0;
+      var y = h - padB - bh;
+      ctx.fillStyle = accent;
+      ctx.fillRect(x, y, barW, Math.max(bh, m.mins ? 2 : 0));
+      ctx.fillStyle = muted;
+      ctx.textAlign = 'center';
+      ctx.fillText(m.label, x + barW / 2, h - 8);
+    });
+  }
+
+  /* ---------- Export / Import / Email ---------- */
+  function flightsForExport() {
+    // Prefer current log filters when any are set; else all
+    var type = document.getElementById('filterType').value;
+    var from = document.getElementById('filterFrom').value;
+    var to = document.getElementById('filterTo').value;
+    var q = (document.getElementById('logSearch').value || '').trim();
+    if (type || from || to || q) return getFilteredFlights();
+    return state.flights.slice().sort(function (a, b) {
+      if (a.date !== b.date) return a.date < b.date ? 1 : -1;
+      return 0;
+    });
+  }
+
+  function csvEscape(s) {
+    s = s == null ? '' : String(s);
+    if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+
+  function buildCsv(flights) {
+    var headers = ['Date', 'Type', 'Hours_HMM', 'Hours_Decimal', 'Minutes', 'Serial', 'Location', 'Mission', 'Role', 'DayNight', 'Start', 'End', 'Notes', 'Id'];
+    var lines = [headers.join(',')];
+    flights.forEach(function (f) {
+      lines.push([
+        f.date, f.type, fmtHMM(f.minutes), fmtDec(f.minutes), f.minutes,
+        f.serial, f.location, f.mission, f.role, f.dayNight,
+        f.startTime || '', f.endTime || '', f.notes, f.id
+      ].map(csvEscape).join(','));
+    });
+    return lines.join('\n');
+  }
+
+  function buildSummary(flights) {
+    var total = sumMinutes(flights);
+    var byType = {};
+    flights.forEach(function (f) {
+      byType[f.type] = (byType[f.type] || 0) + (f.minutes || 0);
+    });
+    var lines = [
+      'Drone Flight Log summary',
+      'Flights: ' + flights.length,
+      'Total: ' + fmtHMM(total) + ' (' + fmtDec(total) + ' h)',
+      '',
+      'By type:'
+    ];
+    Object.keys(byType).sort(function (a, b) { return byType[b] - byType[a]; }).forEach(function (t) {
+      lines.push('- ' + t + ': ' + fmtHMM(byType[t]) + ' (' + fmtDec(byType[t]) + ' h)');
+    });
+    var type = document.getElementById('filterType').value;
+    var from = document.getElementById('filterFrom').value;
+    var to = document.getElementById('filterTo').value;
+    if (type || from || to) {
+      lines.push('');
+      lines.push('Filters: ' +
+        (type ? 'type=' + type + ' ' : '') +
+        (from ? 'from=' + from + ' ' : '') +
+        (to ? 'to=' + to : ''));
+    }
+    lines.push('');
+    lines.push('Generated ' + new Date().toLocaleString());
+    return lines.join('\n');
+  }
+
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      URL.revokeObjectURL(url);
+      a.remove();
+    }, 1000);
+  }
+
+  function exportCsvFile(flights) {
+    var csv = buildCsv(flights);
+    var name = 'FlightLog_' + todayISO() + '.csv';
+    downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), name);
+    return name;
+  }
+
+  function emailExport() {
+    var flights = flightsForExport();
+    var csv = buildCsv(flights);
+    var summary = buildSummary(flights);
+    var name = 'FlightLog_' + todayISO() + '.csv';
+    var file = new File([csv], name, { type: 'text/csv' });
+
+    function mailtoFallback() {
+      exportCsvFile(flights);
+      var body = summary + '\n\n(CSV downloaded — attach ' + name + ' manually if Mail did not include it.)';
+      var url = 'mailto:?subject=' + encodeURIComponent('Drone Flight Log') +
+        '&body=' + encodeURIComponent(body);
+      window.location.href = url;
+      toast('CSV downloaded — attach in Mail if needed');
+    }
+
+    if (navigator.share && navigator.canShare) {
+      var data = { files: [file], title: 'Drone Flight Log', text: summary };
+      try {
+        if (navigator.canShare(data)) {
+          navigator.share(data).then(function () {
+            toast('Shared');
+          }).catch(function (err) {
+            if (err && err.name === 'AbortError') return;
+            mailtoFallback();
+          });
+          return;
+        }
+      } catch (e) { /* fall through */ }
+    }
+    // try share without files
+    if (navigator.share) {
+      navigator.share({ title: 'Drone Flight Log', text: summary }).then(function () {
+        exportCsvFile(flights);
+        toast('Summary shared — CSV downloaded to attach');
+      }).catch(function (err) {
+        if (err && err.name === 'AbortError') return;
+        mailtoFallback();
+      });
+      return;
+    }
+    mailtoFallback();
+  }
+
+  document.getElementById('btnEmailExportTotals').addEventListener('click', emailExport);
+  document.getElementById('btnEmailExportSettings').addEventListener('click', emailExport);
+  document.getElementById('btnCsvExportTotals').addEventListener('click', function () {
+    exportCsvFile(flightsForExport());
+    toast('CSV downloaded');
+  });
+  document.getElementById('btnExportCsv').addEventListener('click', function () {
+    exportCsvFile(flightsForExport());
+    toast('CSV downloaded');
+  });
+  document.getElementById('btnExportJson').addEventListener('click', function () {
+    var payload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      types: state.types,
+      flights: state.flights
+    };
+    downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }),
+      'FlightLog_backup_' + todayISO() + '.json');
+    toast('JSON backup downloaded');
+  });
+
+  var importMode = 'merge';
+  document.getElementById('importMode').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    document.querySelectorAll('#importMode button').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    importMode = b.getAttribute('data-mode');
+  });
+
+  document.getElementById('btnImportJson').addEventListener('click', function () {
+    document.getElementById('importFile').click();
+  });
+  document.getElementById('importFile').addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var data = JSON.parse(reader.result);
+        var flights = Array.isArray(data.flights) ? data.flights : (Array.isArray(data) ? data : null);
+        if (!flights) throw new Error('No flights array');
+        var types = Array.isArray(data.types) ? data.types : [];
+        if (importMode === 'replace') {
+          confirmDialog('Replace all data?', 'Current flights and types will be overwritten.', function () {
+            state.flights = flights;
+            state.types = types.length ? types : state.types;
+            saveState();
+            renderLog(); renderTypes();
+            toast('Replaced with import');
+          });
+        } else {
+          var ids = {};
+          state.flights.forEach(function (f) { ids[f.id] = true; });
+          var added = 0;
+          flights.forEach(function (f) {
+            if (!f.id) f.id = uid();
+            if (!ids[f.id]) {
+              state.flights.push(f);
+              ids[f.id] = true;
+              added++;
+            }
+          });
+          types.forEach(function (t) {
+            if (t && state.types.indexOf(t) < 0) state.types.push(t);
+          });
+          saveState();
+          renderLog(); renderTypes();
+          toast('Merged ' + added + ' flights');
+        }
+      } catch (err) {
+        toast('Import failed: bad JSON');
+      }
+    };
+    reader.readAsText(file);
+  });
+
+
+  /* ---------- CSV Import ---------- */
+  var csvImportPending = null; // { headers, rows }
+
+  var CSV_FIELDS = [
+    { key: 'date', label: 'Date *', required: true },
+    { key: 'type', label: 'Type / aircraft / platform *', required: true },
+    { key: 'duration', label: 'Duration (hours / H:MM / minutes) *', required: true },
+    { key: 'serial', label: 'Serial / tail #', required: false },
+    { key: 'location', label: 'Location', required: false },
+    { key: 'mission', label: 'Mission / purpose', required: false },
+    { key: 'role', label: 'Pilot role', required: false },
+    { key: 'dayNight', label: 'Day / Night', required: false },
+    { key: 'notes', label: 'Notes', required: false },
+    { key: 'startTime', label: 'Start time', required: false },
+    { key: 'endTime', label: 'End time', required: false }
+  ];
+
+  var CSV_GUESS = {
+    date: [/^(flight\s*)?date$/i, /^dt$/i, /^day$/i, /sortie\s*date/i],
+    type: [/^(drone\s*)?type$/i, /aircraft/i, /platform/i, /uas/i, /model/i, /airframe/i, /^ac$/i],
+    duration: [/^(flight\s*)?(hours?|hrs?|time|duration)$/i, /decimal/i, /total\s*time/i, /^mins?$/i, /^minutes$/i, /flight\s*time/i],
+    serial: [/serial/i, /tail/i, /^sn$/i, /bureau/i, /reg(istration)?/i],
+    location: [/location/i, /place/i, /site/i, /range/i, /ao\b/i, /airfield/i],
+    mission: [/mission/i, /purpose/i, /task/i, /event/i],
+    role: [/role/i, /\bpic\b/i, /pilot/i, /\bvo\b/i, /crew/i],
+    dayNight: [/day\s*\/?\s*night/i, /^daynight$/i, /period/i, /lighting/i],
+    notes: [/notes?/i, /remarks?/i, /comment/i],
+    startTime: [/start(\s*time)?$/i, /^from$/i],
+    endTime: [/end(\s*time)?$/i, /^to$/i, /stop(\s*time)?$/i]
+  };
+
+  function parseCsvText(text) {
+    // RFC4180-ish parser
+    if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+    var rows = [];
+    var row = [];
+    var cur = '';
+    var i = 0;
+    var inQ = false;
+    while (i < text.length) {
+      var c = text[i];
+      if (inQ) {
+        if (c === '"') {
+          if (text[i + 1] === '"') { cur += '"'; i += 2; continue; }
+          inQ = false; i++; continue;
+        }
+        cur += c; i++; continue;
+      }
+      if (c === '"') { inQ = true; i++; continue; }
+      if (c === ',') { row.push(cur); cur = ''; i++; continue; }
+      if (c === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; i++; continue; }
+      if (c === '\r') { i++; continue; }
+      cur += c; i++;
+    }
+    row.push(cur);
+    if (row.length > 1 || (row.length === 1 && row[0] !== '')) rows.push(row);
+    // drop trailing empty rows
+    while (rows.length && rows[rows.length - 1].every(function (x) { return String(x).trim() === ''; })) rows.pop();
+    if (!rows.length) return { headers: [], rows: [] };
+    var headers = rows[0].map(function (h) { return String(h).trim(); });
+    var data = rows.slice(1).map(function (r) {
+      var obj = {};
+      headers.forEach(function (h, idx) { obj[h] = r[idx] != null ? String(r[idx]) : ''; });
+      return obj;
+    }).filter(function (obj) {
+      return headers.some(function (h) { return String(obj[h] || '').trim() !== ''; });
+    });
+    return { headers: headers, rows: data };
+  }
+
+  function guessCsvMapping(headers) {
+    var map = {};
+    var used = {};
+    CSV_FIELDS.forEach(function (f) {
+      var patterns = CSV_GUESS[f.key] || [];
+      var found = -1;
+      for (var i = 0; i < headers.length; i++) {
+        if (used[i]) continue;
+        var h = headers[i];
+        for (var p = 0; p < patterns.length; p++) {
+          if (patterns[p].test(h)) { found = i; break; }
+        }
+        if (found >= 0) break;
+      }
+      // soft fallback: duration also match "Hours_Decimal" / "Hours_HMM" / "Minutes" from our own export
+      if (found < 0 && f.key === 'duration') {
+        for (var j = 0; j < headers.length; j++) {
+          if (used[j]) continue;
+          if (/hours_decimal|hours_hmm|^minutes$/i.test(headers[j])) { found = j; break; }
+        }
+      }
+      if (found < 0 && f.key === 'type') {
+        for (var k = 0; k < headers.length; k++) {
+          if (used[k]) continue;
+          if (/^type$/i.test(headers[k])) { found = k; break; }
+        }
+      }
+      map[f.key] = found >= 0 ? headers[found] : '';
+      if (found >= 0) used[found] = true;
+    });
+    return map;
+  }
+
+  var MONTHS = {
+    jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6,
+    jul: 7, aug: 8, sep: 9, sept: 9, oct: 10, nov: 11, dec: 12
+  };
+
+  function parseFlexibleDate(raw) {
+    if (raw == null) return null;
+    var s = String(raw).trim();
+    if (!s) return null;
+    // YYYY-MM-DD
+    var m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (m) return padDate(+m[1], +m[2], +m[3]);
+    // M/D/YYYY or M-D-YYYY or M.D.YYYY
+    m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+    if (m) {
+      var year = +m[3];
+      if (year < 100) year += year >= 70 ? 1900 : 2000;
+      return padDate(year, +m[1], +m[2]);
+    }
+    // D-Mon-YY or D-Mon-YYYY or D Mon YY
+    m = s.match(/^(\d{1,2})[-\s]([A-Za-z]{3,9})[-\s](\d{2,4})$/);
+    if (m) {
+      var mon = MONTHS[m[2].slice(0, 3).toLowerCase()];
+      if (!mon) return null;
+      var y = +m[3];
+      if (y < 100) y += y >= 70 ? 1900 : 2000;
+      return padDate(y, mon, +m[1]);
+    }
+    // Mon D, YYYY
+    m = s.match(/^([A-Za-z]{3,9})\s+(\d{1,2}),?\s+(\d{4})$/);
+    if (m) {
+      var mon2 = MONTHS[m[1].slice(0, 3).toLowerCase()];
+      if (!mon2) return null;
+      return padDate(+m[3], mon2, +m[2]);
+    }
+    return null;
+  }
+
+  function padDate(y, mo, d) {
+    if (!y || !mo || !d || mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+    return y + '-' + String(mo).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+  }
+
+  function parseDurationToMinutes(raw, headerHint) {
+    if (raw == null) return 0;
+    var s = String(raw).trim();
+    if (!s) return 0;
+    // H:MM or HH:MM:SS
+    var m = s.match(/^(\d+):(\d{1,2})(?::(\d{1,2}))?$/);
+    if (m) {
+      return (+m[1]) * 60 + (+m[2]) + (m[3] ? Math.round(+m[3] / 60) : 0);
+    }
+    // plain number
+    var n = Number(s.replace(/,/g, ''));
+    if (!isFinite(n) || n < 0) return 0;
+    var hint = (headerHint || '').toLowerCase();
+    if (/min/.test(hint) && !/hour|hr|decimal|hmm/.test(hint)) {
+      return Math.round(n);
+    }
+    // If value looks like minutes (> 24 and integer-ish) and header doesn't say hours
+    if (!/hour|hr|decimal|time|duration|hmm/.test(hint) && n > 24 && Math.abs(n - Math.round(n)) < 1e-6) {
+      // ambiguous — prefer hours if <= 24 else minutes; already > 24 so minutes
+      return Math.round(n);
+    }
+    // default: decimal hours
+    return Math.round(n * 60);
+  }
+
+  function flightDupKey(f) {
+    return [f.date || '', f.type || '', String(f.minutes || 0), (f.notes || '').trim()].join('|').toLowerCase();
+  }
+
+  function readCsvMappingFromUI() {
+    var map = {};
+    CSV_FIELDS.forEach(function (f) {
+      var sel = document.getElementById('csvMap_' + f.key);
+      map[f.key] = sel ? sel.value : '';
+    });
+    return map;
+  }
+
+  function buildFlightsFromCsv(rows, mapping) {
+    var out = [];
+    var skipped = { bad: 0, dup: 0 };
+    var existing = {};
+    state.flights.forEach(function (f) { existing[flightDupKey(f)] = true; });
+    var seenBatch = {};
+    var newTypes = [];
+
+    rows.forEach(function (row) {
+      var dateRaw = mapping.date ? row[mapping.date] : '';
+      var typeRaw = mapping.type ? String(row[mapping.type] || '').trim() : '';
+      var durRaw = mapping.duration ? row[mapping.duration] : '';
+      var date = parseFlexibleDate(dateRaw);
+      var minutes = parseDurationToMinutes(durRaw, mapping.duration);
+      if (!date || !typeRaw || minutes <= 0) { skipped.bad++; return; }
+
+      var flight = {
+        id: uid(),
+        date: date,
+        type: typeRaw,
+        minutes: minutes,
+        durationMode: 'hm',
+        startTime: mapping.startTime ? String(row[mapping.startTime] || '').trim() : '',
+        endTime: mapping.endTime ? String(row[mapping.endTime] || '').trim() : '',
+        serial: mapping.serial ? String(row[mapping.serial] || '').trim() : '',
+        location: mapping.location ? String(row[mapping.location] || '').trim() : '',
+        mission: mapping.mission ? String(row[mapping.mission] || '').trim() : '',
+        role: mapping.role ? String(row[mapping.role] || '').trim() : '',
+        dayNight: mapping.dayNight ? String(row[mapping.dayNight] || '').trim() : 'Day',
+        notes: mapping.notes ? String(row[mapping.notes] || '').trim() : '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      if (!flight.dayNight) flight.dayNight = 'Day';
+
+      var key = flightDupKey(flight);
+      if (existing[key] || seenBatch[key]) { skipped.dup++; return; }
+      seenBatch[key] = true;
+      out.push(flight);
+      if (state.types.indexOf(typeRaw) < 0 && newTypes.indexOf(typeRaw) < 0) newTypes.push(typeRaw);
+    });
+    return { flights: out, skipped: skipped, newTypes: newTypes };
+  }
+
+  function renderCsvMapModal(parsed) {
+    csvImportPending = parsed;
+    var guess = guessCsvMapping(parsed.headers);
+    var fields = document.getElementById('csvMapFields');
+    var optBlank = '<option value="">— skip —</option>';
+    var opts = parsed.headers.map(function (h) {
+      return '<option value="' + escapeAttr(h) + '">' + escapeHtml(h) + '</option>';
+    }).join('');
+    fields.innerHTML = CSV_FIELDS.map(function (f) {
+      return '<label>' + escapeHtml(f.label) + '</label>' +
+        '<select id="csvMap_' + f.key + '">' + optBlank + opts + '</select>';
+    }).join('');
+    CSV_FIELDS.forEach(function (f) {
+      var sel = document.getElementById('csvMap_' + f.key);
+      if (guess[f.key] && parsed.headers.indexOf(guess[f.key]) >= 0) sel.value = guess[f.key];
+    });
+    document.getElementById('csvMapInfo').textContent =
+      'File has ' + parsed.headers.length + ' columns and ' + parsed.rows.length + ' data rows. Adjust mapping if needed.';
+    updateCsvPreview();
+    // live preview on change
+    fields.querySelectorAll('select').forEach(function (sel) {
+      sel.addEventListener('change', updateCsvPreview);
+    });
+    document.getElementById('csvMapModal').classList.add('show');
+  }
+
+  function updateCsvPreview() {
+    if (!csvImportPending) return;
+    var mapping = readCsvMappingFromUI();
+    var built = buildFlightsFromCsv(csvImportPending.rows, mapping);
+    // preview uses current state for dups — OK
+    document.getElementById('csvPreviewStats').textContent =
+      'Will import ' + built.flights.length + ' of ' + csvImportPending.rows.length +
+      ' rows · skip ' + built.skipped.dup + ' duplicate(s) · skip ' + built.skipped.bad + ' invalid · ' +
+      built.newTypes.length + ' new type(s)';
+    var sample = built.flights.slice(0, 5);
+    if (!sample.length) {
+      document.getElementById('csvPreviewTable').innerHTML = '<div class="empty" style="padding:8px">No valid rows with current mapping.</div>';
+      return;
+    }
+    var head = '<tr><th>Date</th><th>Type</th><th>Hours</th><th>Notes</th></tr>';
+    var body = sample.map(function (f) {
+      return '<tr><td>' + escapeHtml(f.date) + '</td><td>' + escapeHtml(f.type) +
+        '</td><td>' + escapeHtml(fmtHMM(f.minutes)) + '</td><td>' + escapeHtml((f.notes || '').slice(0, 40)) + '</td></tr>';
+    }).join('');
+    document.getElementById('csvPreviewTable').innerHTML =
+      '<table style="width:100%;border-collapse:collapse">' + head + body + '</table>';
+  }
+
+  document.getElementById('btnImportCsv').addEventListener('click', function () {
+    document.getElementById('importCsvFile').click();
+  });
+  document.getElementById('importCsvFile').addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    var name = (file.name || '').toLowerCase();
+    if (/\.xlsx?$/.test(name) || /\.xls$/.test(name)) {
+      toast('Save as CSV first (Excel not supported)');
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = parseCsvText(String(reader.result || ''));
+        if (!parsed.headers.length || !parsed.rows.length) {
+          toast('CSV has no data rows');
+          return;
+        }
+        renderCsvMapModal(parsed);
+      } catch (err) {
+        toast('CSV parse failed');
+      }
+    };
+    reader.readAsText(file);
+  });
+  document.getElementById('csvMapCancel').addEventListener('click', function () {
+    document.getElementById('csvMapModal').classList.remove('show');
+    csvImportPending = null;
+  });
+  document.getElementById('csvMapConfirm').addEventListener('click', function () {
+    if (!csvImportPending) return;
+    var mapping = readCsvMappingFromUI();
+    if (!mapping.date || !mapping.type || !mapping.duration) {
+      toast('Map Date, Type, and Duration');
+      return;
+    }
+    var built = buildFlightsFromCsv(csvImportPending.rows, mapping);
+    if (!built.flights.length && importMode !== 'replace') {
+      toast('Nothing to import');
+      return;
+    }
+    function applyMerge() {
+      built.newTypes.forEach(function (t) {
+        if (state.types.indexOf(t) < 0) state.types.push(t);
+      });
+      built.flights.forEach(function (f) { state.flights.push(f); });
+      saveState();
+      document.getElementById('csvMapModal').classList.remove('show');
+      csvImportPending = null;
+      renderLog(); renderTypes();
+      toast('Imported ' + built.flights.length + ' · skipped ' + (built.skipped.dup + built.skipped.bad));
+      showTab('log');
+    }
+    if (importMode === 'replace') {
+      confirmDialog('Replace all data?', 'Current flights will be wiped, then CSV rows imported.', function () {
+        state.flights = [];
+        built = buildFlightsFromCsv(csvImportPending.rows, mapping);
+        built.newTypes.forEach(function (t) {
+          if (state.types.indexOf(t) < 0) state.types.push(t);
+        });
+        built.flights.forEach(function (f) { state.flights.push(f); });
+        saveState();
+        document.getElementById('csvMapModal').classList.remove('show');
+        csvImportPending = null;
+        renderLog(); renderTypes();
+        toast('Replaced with ' + built.flights.length + ' flights');
+        showTab('log');
+      });
+    } else {
+      applyMerge();
+    }
+  });
+
+  /* ---------- Escaping ---------- */
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  function escapeAttr(s) { return escapeHtml(s).replace(/'/g, '&#39;'); }
+
+  /* ---------- PWA / SW (optional, fail gracefully) ---------- */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js').catch(function () { /* offline optional */ });
+    });
+  }
+
+  /* ---------- Expose for tests ---------- */
+  window.__flightLog = {
+    getState: function () { return state; },
+    setState: function (s) { state = s; saveState(); },
+    addFlight: function (f) {
+      f.id = f.id || uid();
+      f.minutes = f.minutes || 0;
+      f.updatedAt = new Date().toISOString();
+      state.flights.push(f);
+      saveState();
+    },
+    sumMinutes: sumMinutes,
+    fmtHMM: fmtHMM,
+    fmtDec: fmtDec,
+    buildCsv: buildCsv,
+    buildSummary: buildSummary,
+    parseCsvText: parseCsvText,
+    guessCsvMapping: guessCsvMapping,
+    parseFlexibleDate: parseFlexibleDate,
+    parseDurationToMinutes: parseDurationToMinutes,
+    buildFlightsFromCsv: buildFlightsFromCsv,
+    flightDupKey: flightDupKey,
+    renderTotals: renderTotals,
+    renderLog: renderLog,
+    showTab: showTab,
+    clearData: function () {
+      state = { types: DEFAULT_TYPES.slice(), flights: [], version: 1 };
+      saveState();
+    },
+    STORAGE_KEY: STORAGE_KEY
+  };
+
+  // init
+  fillTypeSelects();
+  prepareAddForm(false);
+  renderLog();
+})();
+</script>
+</body>
+</html>
