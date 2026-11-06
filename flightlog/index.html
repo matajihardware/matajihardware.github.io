@@ -227,12 +227,62 @@ input:focus, select:focus, textarea:focus {
 
 canvas.chart { width: 100%; height: 160px; display: block; }
 .field-group { margin-bottom: 4px; }
+
+.banner {
+  display: none;
+  background: color-mix(in srgb, var(--accent) 14%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  border-radius: 12px; padding: 12px; margin: 0 0 12px;
+  align-items: flex-start; gap: 10px;
+}
+.banner.show { display: flex; }
+.banner .banner-body { flex: 1; min-width: 0; }
+.banner .banner-title { font-weight: 650; font-size: .95rem; margin-bottom: 2px; }
+.banner .banner-msg { font-size: .82rem; color: var(--muted); }
+.banner .banner-actions { display: flex; flex-direction: column; gap: 6px; flex: 0 0 auto; }
+.banner .banner-actions .btn { width: auto; min-height: 40px; padding: 8px 12px; font-size: .85rem; }
+.toggle-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.toggle-row label { flex: 1; margin: 0; font-size: .9rem; color: var(--text); font-weight: 560; }
+.toggle-row input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--accent); }
+.snap-list { margin-top: 8px; }
+.snap-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.snap-item .meta { flex: 1; min-width: 0; }
+.snap-item .meta .when { font-weight: 600; font-size: .9rem; }
+.snap-item .meta .cnt { color: var(--muted); font-size: .8rem; }
+.welcome-box {
+  text-align: center; padding: 20px 12px 8px; color: var(--muted);
+}
+.welcome-box strong { color: var(--text); display: block; margin-bottom: 6px; font-size: 1.05rem; }
+.meta-line { font-size: .85rem; color: var(--muted); margin: 6px 0 10px; }
+.meta-line.warnish { color: var(--warn); font-weight: 560; }
+
+#icloudBackupLink, #autoBackupLink, #backupDoneLink {
+  color: var(--accent); font-weight: 650; word-break: break-all; font-size: .95rem;
+}
 </style>
 </head>
 <body>
 <div class="header">
   <h1 id="hdrTitle">Flight Log</h1>
   <div class="sub" id="hdrSub">sUAS hours by type &amp; date</div>
+
+<div class="banner" id="icloudBanner" style="margin:12px 16px 0">
+  <div class="banner-body">
+    <div class="banner-title">Save a copy to iCloud?</div>
+    <div class="banner-msg">Flight saved. Tap to open the share sheet and Save to Files → iCloud Drive.</div>
+  </div>
+  <div class="banner-actions">
+    <button type="button" class="btn" id="btnBannerIcloud">Save to iCloud</button>
+    <button type="button" class="btn ghost" id="btnBannerDismiss">Not now</button>
+  </div>
+</div>
 </div>
 
 <!-- LOG -->
@@ -253,6 +303,10 @@ canvas.chart { width: 100%; height: 160px; display: block; }
         <input type="date" id="filterTo">
       </div>
     </div>
+  </div>
+  <div class="card" id="logBackupBar">
+    <button type="button" class="btn secondary" id="btnLogBackupIcloud">Back up to iCloud</button>
+    <p class="hint" style="margin:8px 0 0" id="logBackupHint">Save a JSON copy to Files → iCloud Drive.</p>
   </div>
   <div class="card" id="logList"><div class="empty">No flights yet. Tap Add.</div></div>
 </section>
@@ -376,11 +430,44 @@ canvas.chart { width: 100%; height: 160px; display: block; }
     </div>
   </div>
   <div class="card">
-    <h3>Backup &amp; export</h3>
+    <h3>Backup &amp; restore</h3>
     <div class="warn-box">
-      iOS Safari may clear site data if this page goes unused for a long time. Export a JSON backup periodically and keep a copy in Files or email.
+      On-phone automatic backups protect against accidental deletes, but not losing this iPhone.
+      Use <strong>Back up to iCloud</strong> (Save to Files → iCloud Drive) to move data to a new phone or recover after Safari clears site data.
     </div>
-    <button type="button" class="btn" id="btnEmailExportSettings">Email Export</button>
+    <button type="button" class="btn" id="btnBackupIcloud">Back up to iCloud</button>
+    <p class="hint">Opens the share sheet — pick <strong>Save to Files</strong> → iCloud Drive (or Mail / AirDrop).</p>
+    <button type="button" class="btn secondary" id="btnRestoreBackup" style="margin-top:8px">Restore from Backup</button>
+    <p class="hint">Pick a <code>flightlog-backup-….json</code> from Files / iCloud Drive. Preview, then Replace or Merge.</p>
+    <p class="meta-line" id="lastIcloudLine">Last iCloud backup: never</p>
+    <div id="icloudBackupLinkBox" class="card" style="padding:10px;margin:0 0 12px;background:var(--input-bg)">
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:4px">Latest backup file</div>
+      <div id="icloudBackupLinkEmpty" class="hint" style="margin:0">No iCloud backup created on this phone yet. Tap <strong>Back up to iCloud</strong> above.</div>
+      <div id="icloudBackupLinkWrap" class="hidden">
+        <a id="icloudBackupLink" href="#" download>flightlog-backup.json</a>
+        <div class="hint" id="icloudBackupLinkMeta" style="margin:4px 0 0"></div>
+        <p class="hint" style="margin:6px 0 0">Saved to iCloud Drive? Find it in the <strong>Files</strong> app → <strong>iCloud Drive</strong>. (This app can’t link to the file’s location inside iCloud.)</p>
+      </div>
+    </div>
+    <div id="autoBackupLinkBox" class="card" style="padding:10px;margin:0 0 12px;background:var(--input-bg)">
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:4px">Latest automatic on-phone snapshot</div>
+      <div id="autoBackupLinkEmpty" class="hint" style="margin:0">No automatic snapshots yet.</div>
+      <div id="autoBackupLinkWrap" class="hidden">
+        <a id="autoBackupLink" href="#" download>flightlog-autosnap.json</a>
+        <div class="hint" id="autoBackupLinkMeta" style="margin:4px 0 0"></div>
+        <p class="hint" style="margin:6px 0 0">Stored only on this iPhone. Download a copy here, or use Back up to iCloud for off-phone safety.</p>
+      </div>
+    </div>
+    <div class="toggle-row">
+      <label for="askIcloudToggle">Ask to save to iCloud after each new flight</label>
+      <input type="checkbox" id="askIcloudToggle">
+    </div>
+    <h3 style="margin-top:14px;font-size:1rem">Automatic on-phone backups</h3>
+    <p class="hint">A snapshot is saved on this device every time you add, edit, delete, or import a flight. Last ~10 kept. These stay on this phone only.</p>
+    <div class="snap-list" id="autoSnapList"><div class="empty" style="padding:12px">No automatic backups yet.</div></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+    <h3 style="font-size:1rem">Other export / import</h3>
+    <button type="button" class="btn secondary" id="btnEmailExportSettings">Email Export</button>
     <p class="hint">Tap Mail in the share sheet</p>
     <div class="btn-row" style="margin-top:8px">
       <button type="button" class="btn secondary" id="btnExportCsv">CSV</button>
@@ -392,11 +479,12 @@ canvas.chart { width: 100%; height: 160px; display: block; }
     </div>
     <input type="file" id="importFile" accept="application/json,.json" class="hidden">
     <input type="file" id="importCsvFile" accept=".csv,text/csv,text/plain" class="hidden">
+    <input type="file" id="restoreBackupFile" accept="application/json,.json" class="hidden">
     <div class="seg" id="importMode" style="margin-top:8px">
       <button type="button" data-mode="merge" class="on">Merge</button>
       <button type="button" data-mode="replace">Replace</button>
     </div>
-    <p class="hint">Merge keeps existing flights; Replace wipes then loads the file. Applies to JSON and CSV.</p>
+    <p class="hint">Merge / Replace above applies to Import JSON and Import CSV. Restore from Backup asks each time.</p>
     <p class="hint">Excel (.xlsx) is not supported in the browser. In Excel/Numbers choose <strong>File → Save As → CSV</strong> (UTF-8), then Import CSV.</p>
   </div>
   <div class="card">
@@ -450,6 +538,48 @@ canvas.chart { width: 100%; height: 160px; display: block; }
       <button type="button" class="btn secondary" id="csvMapCancel">Cancel</button>
       <button type="button" class="btn" id="csvMapConfirm">Import</button>
     </div>
+  </div>
+</div>
+
+
+<div class="modal-backdrop" id="restoreModal">
+  <div class="modal">
+    <h2 id="restoreTitle">Restore from Backup</h2>
+    <p class="hint" id="restorePreview"></p>
+    <div class="btn-row">
+      <button type="button" class="btn secondary" id="restoreCancel">Cancel</button>
+    </div>
+    <div class="btn-row" style="margin-top:8px">
+      <button type="button" class="btn secondary" id="restoreMerge">Merge</button>
+      <button type="button" class="btn" id="restoreReplace">Replace</button>
+    </div>
+    <p class="hint">Merge skips flights that already exist (same id). Replace wipes this phone’s log first.</p>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="autoOfferModal">
+  <div class="modal">
+    <h2>Restore automatic backup?</h2>
+    <p class="hint" id="autoOfferMsg">This phone has an on-device backup but the log is empty (Safari may have cleared it).</p>
+    <div class="btn-row">
+      <button type="button" class="btn secondary" id="autoOfferSkip">Start fresh</button>
+      <button type="button" class="btn" id="autoOfferRestore">Restore</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-backdrop" id="backupDoneModal">
+  <div class="modal">
+    <h2>Backup ready</h2>
+    <p class="hint" id="backupDoneMsg">Your backup file is ready. If you used Save to Files, look in the Files app → iCloud Drive.</p>
+    <div class="card" style="padding:10px;background:var(--input-bg);margin-bottom:12px">
+      <div style="font-weight:600;margin-bottom:4px">Backup file</div>
+      <a id="backupDoneLink" href="#" download>flightlog-backup.json</a>
+      <div class="hint" id="backupDoneMeta" style="margin:4px 0 0"></div>
+    </div>
+    <p class="hint">Saved to iCloud Drive? Find it in the <strong>Files</strong> app → <strong>iCloud Drive</strong>.</p>
+    <button type="button" class="btn" id="backupDoneClose">Done</button>
   </div>
 </div>
 
@@ -518,11 +648,136 @@ canvas.chart { width: 100%; height: 160px; display: block; }
     }
   }
 
-  function saveState() {
+  var META_KEY = 'droneFlightLog.meta.v1';
+  var IDB_NAME = 'droneFlightLogAutoBackup';
+  var IDB_STORE = 'snapshots';
+  var MAX_SNAPSHOTS = 10;
+
+  function loadMeta() {
+    try {
+      var raw = localStorage.getItem(META_KEY);
+      if (!raw) {
+        return {
+          askIcloudAfterFlight: false,
+          lastIcloudBackupAt: null,
+          flightsAtLastIcloud: 0
+        };
+      }
+      var m = JSON.parse(raw);
+      if (typeof m.askIcloudAfterFlight !== 'boolean') m.askIcloudAfterFlight = false;
+      if (!('lastIcloudBackupAt' in m)) m.lastIcloudBackupAt = null;
+      if (typeof m.flightsAtLastIcloud !== 'number') m.flightsAtLastIcloud = 0;
+      return m;
+    } catch (e) {
+      return { askIcloudAfterFlight: false, lastIcloudBackupAt: null, flightsAtLastIcloud: 0 };
+    }
+  }
+
+  function saveMeta() {
+    localStorage.setItem(META_KEY, JSON.stringify(meta));
+  }
+
+  var meta = loadMeta();
+  var pendingRestore = null; // { flights, types, exportedAt, source }
+  var pendingAutoSnap = null;
+
+  function openAutoDb() {
+    return new Promise(function (resolve, reject) {
+      if (!window.indexedDB) { reject(new Error('no idb')); return; }
+      var req = indexedDB.open(IDB_NAME, 1);
+      req.onupgradeneeded = function () {
+        var db = req.result;
+        if (!db.objectStoreNames.contains(IDB_STORE)) {
+          db.createObjectStore(IDB_STORE, { keyPath: 'id', autoIncrement: true });
+        }
+      };
+      req.onsuccess = function () { resolve(req.result); };
+      req.onerror = function () { reject(req.error || new Error('idb open failed')); };
+    });
+  }
+
+  function buildBackupPayload() {
+    return {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      types: state.types.slice(),
+      flights: state.flights.slice()
+    };
+  }
+
+  function backupFilename() {
+    return 'flightlog-backup-' + todayISO() + '.json';
+  }
+
+  function writeAutoSnapshot(reason) {
+    var payload = buildBackupPayload();
+    var snap = {
+      at: new Date().toISOString(),
+      reason: reason || 'change',
+      flightCount: payload.flights.length,
+      payload: payload
+    };
+    return openAutoDb().then(function (db) {
+      return new Promise(function (resolve, reject) {
+        var tx = db.transaction(IDB_STORE, 'readwrite');
+        var store = tx.objectStore(IDB_STORE);
+        store.add(snap);
+        tx.oncomplete = function () {
+          // trim to last MAX_SNAPSHOTS
+          var tx2 = db.transaction(IDB_STORE, 'readwrite');
+          var st2 = tx2.objectStore(IDB_STORE);
+          var getAll = st2.getAll();
+          getAll.onsuccess = function () {
+            var all = getAll.result || [];
+            all.sort(function (a, b) { return (a.id || 0) - (b.id || 0); });
+            var excess = all.length - MAX_SNAPSHOTS;
+            if (excess > 0) {
+              for (var i = 0; i < excess; i++) st2.delete(all[i].id);
+            }
+          };
+          tx2.oncomplete = function () { db.close(); resolve(snap); };
+          tx2.onerror = function () { db.close(); resolve(snap); };
+        };
+        tx.onerror = function () { db.close(); reject(tx.error); };
+      });
+    }).catch(function () { /* auto backup best-effort */ });
+  }
+
+  function listAutoSnapshots() {
+    return openAutoDb().then(function (db) {
+      return new Promise(function (resolve, reject) {
+        var tx = db.transaction(IDB_STORE, 'readonly');
+        var store = tx.objectStore(IDB_STORE);
+        var req = store.getAll();
+        req.onsuccess = function () {
+          var all = req.result || [];
+          all.sort(function (a, b) { return (b.id || 0) - (a.id || 0); });
+          db.close();
+          resolve(all);
+        };
+        req.onerror = function () { db.close(); reject(req.error); };
+      });
+    }).catch(function () { return []; });
+  }
+
+  function getLatestAutoSnapshot() {
+    return listAutoSnapshots().then(function (all) { return all[0] || null; });
+  }
+
+  function saveState(opts) {
+    opts = opts || {};
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if (!opts.skipAuto) {
+      writeAutoSnapshot(opts.reason || 'change').then(function () {
+        renderAutoSnapList();
+      });
+    }
   }
 
   var state = loadState();
+  var hadStoredDataOnLoad = (function () {
+    try { return !!localStorage.getItem(STORAGE_KEY); } catch (e) { return false; }
+  })();
 
   function toast(msg) {
     var el = document.getElementById('toast');
@@ -800,6 +1055,7 @@ canvas.chart { width: 100%; height: 160px; display: block; }
       notes: document.getElementById('fNotes').value.trim(),
       updatedAt: new Date().toISOString()
     };
+    var wasNew = !editId;
     if (editId) {
       var idx = state.flights.findIndex(function (x) { return x.id === editId; });
       if (idx >= 0) state.flights[idx] = flight;
@@ -810,8 +1066,10 @@ canvas.chart { width: 100%; height: 160px; display: block; }
       state.flights.push(flight);
       toast('Flight saved');
     }
-    saveState();
+    saveState({ reason: wasNew ? 'add' : 'edit' });
     showTab('log');
+    updateBackupUi();
+    if (wasNew && meta.askIcloudAfterFlight) showIcloudBanner();
   });
 
   document.getElementById('btnCancelEdit').addEventListener('click', function () {
@@ -824,9 +1082,10 @@ canvas.chart { width: 100%; height: 160px; display: block; }
     if (!id) return;
     confirmDialog('Delete flight?', 'This cannot be undone.', function () {
       state.flights = state.flights.filter(function (f) { return f.id !== id; });
-      saveState();
+      saveState({ reason: 'delete' });
       toast('Deleted');
       showTab('log');
+      updateBackupUi();
     });
   });
 
@@ -870,11 +1129,20 @@ canvas.chart { width: 100%; height: 160px; display: block; }
   }
 
   function renderLog() {
-    fillTypeSelects();
     var list = getFilteredFlights();
     var el = document.getElementById('logList');
     if (!list.length) {
-      el.innerHTML = '<div class="empty">' + (state.flights.length ? 'No flights match filters.' : 'No flights yet. Tap Add.') + '</div>';
+      if (state.flights.length) {
+        el.innerHTML = '<div class="empty">No flights match filters.</div>';
+      } else {
+        el.innerHTML =
+          '<div class="welcome-box">' +
+            '<strong>No flights yet</strong>' +
+            '<div style="margin-bottom:14px">Tap Add to log a flight, or restore a backup from another iPhone.</div>' +
+            '<button type="button" class="btn" id="btnWelcomeRestore">Moving from another iPhone? Restore from Backup</button>' +
+            '<button type="button" class="btn secondary" id="btnWelcomeIcloud" style="margin-top:8px">Back up to iCloud</button>' +
+          '</div>';
+      }
       return;
     }
     el.innerHTML = list.map(function (f) {
@@ -1157,14 +1425,10 @@ canvas.chart { width: 100%; height: 160px; display: block; }
     toast('CSV downloaded');
   });
   document.getElementById('btnExportJson').addEventListener('click', function () {
-    var payload = {
-      version: 1,
-      exportedAt: new Date().toISOString(),
-      types: state.types,
-      flights: state.flights
-    };
-    downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }),
-      'FlightLog_backup_' + todayISO() + '.json');
+    var payload = buildBackupPayload();
+    var name = backupFilename();
+    downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }), name);
+    rememberIcloudBackup(payload, name, false);
     toast('JSON backup downloaded');
   });
 
@@ -1195,8 +1459,9 @@ canvas.chart { width: 100%; height: 160px; display: block; }
           confirmDialog('Replace all data?', 'Current flights and types will be overwritten.', function () {
             state.flights = flights;
             state.types = types.length ? types : state.types;
-            saveState();
+            saveState({ reason: 'import' });
             renderLog(); renderTypes();
+            updateBackupUi();
             toast('Replaced with import');
           });
         } else {
@@ -1214,8 +1479,9 @@ canvas.chart { width: 100%; height: 160px; display: block; }
           types.forEach(function (t) {
             if (t && state.types.indexOf(t) < 0) state.types.push(t);
           });
-          saveState();
+          saveState({ reason: 'import' });
           renderLog(); renderTypes();
+          updateBackupUi();
           toast('Merged ' + added + ' flights');
         }
       } catch (err) {
@@ -1551,10 +1817,11 @@ canvas.chart { width: 100%; height: 160px; display: block; }
         if (state.types.indexOf(t) < 0) state.types.push(t);
       });
       built.flights.forEach(function (f) { state.flights.push(f); });
-      saveState();
+      saveState({ reason: 'import' });
       document.getElementById('csvMapModal').classList.remove('show');
       csvImportPending = null;
       renderLog(); renderTypes();
+      updateBackupUi();
       toast('Imported ' + built.flights.length + ' · skipped ' + (built.skipped.dup + built.skipped.bad));
       showTab('log');
     }
@@ -1566,10 +1833,11 @@ canvas.chart { width: 100%; height: 160px; display: block; }
           if (state.types.indexOf(t) < 0) state.types.push(t);
         });
         built.flights.forEach(function (f) { state.flights.push(f); });
-        saveState();
+        saveState({ reason: 'import' });
         document.getElementById('csvMapModal').classList.remove('show');
         csvImportPending = null;
         renderLog(); renderTypes();
+        updateBackupUi();
         toast('Replaced with ' + built.flights.length + ' flights');
         showTab('log');
       });
@@ -1577,6 +1845,390 @@ canvas.chart { width: 100%; height: 160px; display: block; }
       applyMerge();
     }
   });
+
+
+  /* ---------- iCloud / auto backup & restore ---------- */
+  var lastIcloudPayload = null; // { payload, filename, at }
+  var lastAutoPayload = null;   // { payload, filename, at, flightCount }
+
+  function fmtWhen(iso) {
+    if (!iso) return 'never';
+    try {
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+    } catch (e) { return iso; }
+  }
+
+  function flightDateRange(flights) {
+    if (!flights || !flights.length) return 'no flights';
+    var dates = flights.map(function (f) { return f.date; }).filter(Boolean).sort();
+    if (!dates.length) return flights.length + ' flights';
+    if (dates[0] === dates[dates.length - 1]) return dates[0];
+    return dates[0] + ' → ' + dates[dates.length - 1];
+  }
+
+  function setDownloadAnchor(a, payload, filename) {
+    var json = JSON.stringify(payload, null, 2);
+    var blob = new Blob([json], { type: 'application/json' });
+    if (a._blobUrl) {
+      try { URL.revokeObjectURL(a._blobUrl); } catch (e) {}
+    }
+    a._blobUrl = URL.createObjectURL(blob);
+    a.href = a._blobUrl;
+    a.download = filename;
+    a.textContent = filename;
+  }
+
+  function rememberIcloudBackup(payload, filename, viaShare) {
+    lastIcloudPayload = {
+      payload: payload,
+      filename: filename,
+      at: new Date().toISOString(),
+      flightCount: (payload.flights || []).length
+    };
+    meta.lastIcloudBackupAt = lastIcloudPayload.at;
+    meta.flightsAtLastIcloud = lastIcloudPayload.flightCount;
+    saveMeta();
+    updateBackupUi();
+    if (viaShare !== false) showBackupDoneModal(lastIcloudPayload);
+  }
+
+  function showBackupDoneModal(info) {
+    var a = document.getElementById('backupDoneLink');
+    setDownloadAnchor(a, info.payload, info.filename);
+    document.getElementById('backupDoneMeta').textContent =
+      fmtWhen(info.at) + ' · ' + info.flightCount + ' flight' + (info.flightCount === 1 ? '' : 's') +
+      ' · ' + flightDateRange(info.payload.flights);
+    document.getElementById('backupDoneMsg').textContent =
+      'If you picked Save to Files, the file is in Files → iCloud Drive (or On My iPhone). You can also tap the link below to download another copy.';
+    document.getElementById('backupDoneModal').classList.add('show');
+  }
+
+  document.getElementById('backupDoneClose').addEventListener('click', function () {
+    document.getElementById('backupDoneModal').classList.remove('show');
+  });
+
+  function shareOrDownloadBackup() {
+    var payload = buildBackupPayload();
+    var filename = backupFilename();
+    var json = JSON.stringify(payload, null, 2);
+    var file = new File([json], filename, { type: 'application/json' });
+
+    function fallbackDownload() {
+      downloadBlob(new Blob([json], { type: 'application/json' }), filename);
+      rememberIcloudBackup(payload, filename, true);
+      toast('Backup downloaded — Save to Files / iCloud if prompted');
+    }
+
+    if (navigator.share && navigator.canShare) {
+      var data = { files: [file], title: 'Flight Log backup', text: 'Drone Flight Log backup (' + payload.flights.length + ' flights)' };
+      try {
+        if (navigator.canShare(data)) {
+          navigator.share(data).then(function () {
+            rememberIcloudBackup(payload, filename, true);
+            toast('Shared — pick Save to Files → iCloud Drive');
+          }).catch(function (err) {
+            if (err && err.name === 'AbortError') return;
+            fallbackDownload();
+          });
+          return;
+        }
+      } catch (e) { /* fall through */ }
+    }
+    fallbackDownload();
+  }
+
+  function showIcloudBanner() {
+    document.getElementById('icloudBanner').classList.add('show');
+  }
+  function hideIcloudBanner() {
+    document.getElementById('icloudBanner').classList.remove('show');
+  }
+
+  function daysSince(iso) {
+    if (!iso) return Infinity;
+    var t = new Date(iso).getTime();
+    if (!isFinite(t)) return Infinity;
+    return (Date.now() - t) / (1000 * 60 * 60 * 24);
+  }
+
+  function updateBackupUi() {
+    var line = document.getElementById('lastIcloudLine');
+    var n = state.flights.length;
+    var lastAt = meta.lastIcloudBackupAt;
+    var unsaved = n > (meta.flightsAtLastIcloud || 0);
+    var stale = daysSince(lastAt) > 14;
+    var text = 'Last iCloud backup: ' + (lastAt ? fmtWhen(lastAt) : 'never');
+    if (lastAt) text += ' · ' + (meta.flightsAtLastIcloud || 0) + ' flights then';
+    line.textContent = text;
+    line.classList.toggle('warnish', !lastAt || stale || unsaved);
+    if (!lastAt) {
+      line.textContent = 'Last iCloud backup: never — tap Back up to iCloud to create one';
+    } else if (stale) {
+      line.textContent = text + ' (older than 14 days — consider a new backup)';
+    } else if (unsaved) {
+      line.textContent = text + ' · ' + (n - (meta.flightsAtLastIcloud || 0)) + ' new flight(s) since then';
+    }
+
+    // Latest iCloud backup file link
+    var empty = document.getElementById('icloudBackupLinkEmpty');
+    var wrap = document.getElementById('icloudBackupLinkWrap');
+    if (lastIcloudPayload) {
+      empty.classList.add('hidden');
+      wrap.classList.remove('hidden');
+      setDownloadAnchor(document.getElementById('icloudBackupLink'), lastIcloudPayload.payload, lastIcloudPayload.filename);
+      document.getElementById('icloudBackupLinkMeta').textContent =
+        fmtWhen(lastIcloudPayload.at) + ' · ' + lastIcloudPayload.flightCount + ' flight' +
+        (lastIcloudPayload.flightCount === 1 ? '' : 's') + ' · ' + flightDateRange(lastIcloudPayload.payload.flights);
+    } else if (n > 0) {
+      // Offer a live link to current log as a backup file even before first share
+      empty.classList.add('hidden');
+      wrap.classList.remove('hidden');
+      var live = buildBackupPayload();
+      var liveName = backupFilename();
+      setDownloadAnchor(document.getElementById('icloudBackupLink'), live, liveName);
+      document.getElementById('icloudBackupLinkMeta').textContent =
+        'Current log (not yet shared) · ' + live.flights.length + ' flight' +
+        (live.flights.length === 1 ? '' : 's') + ' · ' + flightDateRange(live.flights) +
+        ' · tap link to download, or Back up to iCloud to share';
+    } else {
+      empty.classList.remove('hidden');
+      wrap.classList.add('hidden');
+    }
+
+    // Log tab backup bar visibility
+    var bar = document.getElementById('logBackupBar');
+    if (bar) bar.classList.toggle('hidden', state.flights.length === 0);
+
+    var hint = document.getElementById('logBackupHint');
+    if (hint) {
+      if (!lastAt) hint.textContent = 'No iCloud backup yet. Save a JSON copy to Files → iCloud Drive.';
+      else if (stale || unsaved) hint.textContent = 'Backup recommended — last iCloud save: ' + fmtWhen(lastAt) + '.';
+      else hint.textContent = 'Last iCloud backup: ' + fmtWhen(lastAt) + '.';
+    }
+
+    renderAutoSnapList();
+  }
+
+  function renderAutoSnapList() {
+    var el = document.getElementById('autoSnapList');
+    if (!el) return;
+    listAutoSnapshots().then(function (snaps) {
+      // Update latest auto download link
+      var aEmpty = document.getElementById('autoBackupLinkEmpty');
+      var aWrap = document.getElementById('autoBackupLinkWrap');
+      if (snaps && snaps.length) {
+        var top = snaps[0];
+        var fname = 'flightlog-autosnap-' + (top.at || '').slice(0, 10) + '.json';
+        lastAutoPayload = {
+          payload: top.payload,
+          filename: fname,
+          at: top.at,
+          flightCount: top.flightCount != null ? top.flightCount : ((top.payload && top.payload.flights) || []).length
+        };
+        aEmpty.classList.add('hidden');
+        aWrap.classList.remove('hidden');
+        setDownloadAnchor(document.getElementById('autoBackupLink'), lastAutoPayload.payload, lastAutoPayload.filename);
+        document.getElementById('autoBackupLinkMeta').textContent =
+          fmtWhen(lastAutoPayload.at) + ' · ' + lastAutoPayload.flightCount + ' flight' +
+          (lastAutoPayload.flightCount === 1 ? '' : 's') + ' · ' + flightDateRange((lastAutoPayload.payload && lastAutoPayload.payload.flights) || []);
+      } else {
+        lastAutoPayload = null;
+        aEmpty.classList.remove('hidden');
+        aWrap.classList.add('hidden');
+      }
+
+      if (!snaps || !snaps.length) {
+        el.innerHTML = '<div class="empty" style="padding:12px">No automatic backups yet.</div>';
+        return;
+      }
+      el.innerHTML = snaps.map(function (s) {
+        var cnt = s.flightCount != null ? s.flightCount : ((s.payload && s.payload.flights) || []).length;
+        return '<div class="snap-item" data-snap-id="' + escapeAttr(String(s.id)) + '">' +
+          '<div class="meta"><div class="when">' + escapeHtml(fmtWhen(s.at)) + '</div>' +
+          '<div class="cnt">' + cnt + ' flight' + (cnt === 1 ? '' : 's') +
+          (s.reason ? ' · ' + escapeHtml(s.reason) : '') + '</div></div>' +
+          '<button type="button" class="btn small secondary" data-restore-snap="' + escapeAttr(String(s.id)) + '">Restore</button>' +
+          '</div>';
+      }).join('');
+    });
+  }
+
+  function openRestoreFilePicker() {
+    document.getElementById('restoreBackupFile').click();
+  }
+
+  function parseBackupText(text) {
+    var data = JSON.parse(text);
+    var flights = Array.isArray(data.flights) ? data.flights : (Array.isArray(data) ? data : null);
+    if (!flights) throw new Error('No flights array');
+    var types = Array.isArray(data.types) ? data.types : [];
+    return {
+      flights: flights,
+      types: types,
+      exportedAt: data.exportedAt || null,
+      version: data.version || 1
+    };
+  }
+
+  function showRestorePreview(parsed, sourceLabel) {
+    pendingRestore = parsed;
+    pendingRestore.source = sourceLabel || 'file';
+    var n = parsed.flights.length;
+    var msg = n + ' flight' + (n === 1 ? '' : 's');
+    msg += ' · dates ' + flightDateRange(parsed.flights);
+    if (parsed.exportedAt) msg += ' · file dated ' + fmtWhen(parsed.exportedAt);
+    if (parsed.types && parsed.types.length) msg += ' · ' + parsed.types.length + ' drone types';
+    msg += '. This phone currently has ' + state.flights.length + ' flight' + (state.flights.length === 1 ? '' : 's') + '.';
+    document.getElementById('restorePreview').textContent = msg;
+    document.getElementById('restoreTitle').textContent = 'Restore from Backup';
+    document.getElementById('restoreModal').classList.add('show');
+  }
+
+  function applyRestore(mode) {
+    if (!pendingRestore) return;
+    var flights = pendingRestore.flights;
+    var types = pendingRestore.types || [];
+    if (mode === 'replace') {
+      state.flights = flights.map(function (f) {
+        if (!f.id) f.id = uid();
+        return f;
+      });
+      if (types.length) state.types = types.slice();
+      saveState({ reason: 'restore' });
+      toast('Replaced with ' + state.flights.length + ' flights');
+    } else {
+      var ids = {};
+      state.flights.forEach(function (f) { ids[f.id] = true; });
+      var added = 0;
+      flights.forEach(function (f) {
+        if (!f.id) f.id = uid();
+        if (!ids[f.id]) {
+          state.flights.push(f);
+          ids[f.id] = true;
+          added++;
+        }
+      });
+      types.forEach(function (t) {
+        if (t && state.types.indexOf(t) < 0) state.types.push(t);
+      });
+      saveState({ reason: 'restore' });
+      toast('Merged ' + added + ' flights');
+    }
+    pendingRestore = null;
+    document.getElementById('restoreModal').classList.remove('show');
+    fillTypeSelects();
+    renderLog();
+    renderTypes();
+    updateBackupUi();
+    showTab('log');
+  }
+
+  document.getElementById('restoreCancel').addEventListener('click', function () {
+    pendingRestore = null;
+    document.getElementById('restoreModal').classList.remove('show');
+  });
+  document.getElementById('restoreMerge').addEventListener('click', function () { applyRestore('merge'); });
+  document.getElementById('restoreReplace').addEventListener('click', function () { applyRestore('replace'); });
+
+  document.getElementById('restoreBackupFile').addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = parseBackupText(reader.result);
+        showRestorePreview(parsed, file.name || 'backup');
+      } catch (err) {
+        toast('Restore failed: bad JSON');
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  document.getElementById('btnBackupIcloud').addEventListener('click', shareOrDownloadBackup);
+  document.getElementById('btnRestoreBackup').addEventListener('click', openRestoreFilePicker);
+  document.getElementById('btnLogBackupIcloud').addEventListener('click', shareOrDownloadBackup);
+  document.getElementById('btnBannerIcloud').addEventListener('click', function () {
+    hideIcloudBanner();
+    shareOrDownloadBackup();
+  });
+  document.getElementById('btnBannerDismiss').addEventListener('click', hideIcloudBanner);
+
+  document.getElementById('askIcloudToggle').checked = !!meta.askIcloudAfterFlight;
+  document.getElementById('askIcloudToggle').addEventListener('change', function () {
+    meta.askIcloudAfterFlight = !!this.checked;
+    saveMeta();
+    toast(meta.askIcloudAfterFlight ? 'Will ask after each new flight' : 'Won’t ask after each flight');
+  });
+
+  // Delegated welcome + auto-snap restore buttons
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.id === 'btnWelcomeRestore' || (t.closest && t.closest('#btnWelcomeRestore'))) {
+      openRestoreFilePicker();
+      return;
+    }
+    if (t.id === 'btnWelcomeIcloud' || (t.closest && t.closest('#btnWelcomeIcloud'))) {
+      shareOrDownloadBackup();
+      return;
+    }
+    var snapBtn = t.closest ? t.closest('[data-restore-snap]') : null;
+    if (snapBtn) {
+      var sid = snapBtn.getAttribute('data-restore-snap');
+      listAutoSnapshots().then(function (snaps) {
+        var s = snaps.find(function (x) { return String(x.id) === String(sid); });
+        if (!s || !s.payload) { toast('Snapshot not found'); return; }
+        try {
+          var parsed = parseBackupText(JSON.stringify(s.payload));
+          showRestorePreview(parsed, 'automatic backup');
+        } catch (err) {
+          toast('Bad snapshot');
+        }
+      });
+    }
+  });
+
+  document.getElementById('autoOfferSkip').addEventListener('click', function () {
+    document.getElementById('autoOfferModal').classList.remove('show');
+    pendingAutoSnap = null;
+  });
+  document.getElementById('autoOfferRestore').addEventListener('click', function () {
+    document.getElementById('autoOfferModal').classList.remove('show');
+    if (!pendingAutoSnap || !pendingAutoSnap.payload) return;
+    try {
+      var parsed = parseBackupText(JSON.stringify(pendingAutoSnap.payload));
+      // Direct replace for empty-log recovery
+      state.flights = parsed.flights.map(function (f) { if (!f.id) f.id = uid(); return f; });
+      if (parsed.types && parsed.types.length) state.types = parsed.types.slice();
+      saveState({ reason: 'auto-recover' });
+      fillTypeSelects();
+      renderLog();
+      renderTypes();
+      updateBackupUi();
+      toast('Restored ' + state.flights.length + ' flights from automatic backup');
+    } catch (err) {
+      toast('Could not restore automatic backup');
+    }
+    pendingAutoSnap = null;
+  });
+
+  function maybeOfferAutoRestore() {
+    if (hadStoredDataOnLoad && state.flights.length) return Promise.resolve();
+    if (state.flights.length) return Promise.resolve();
+    return getLatestAutoSnapshot().then(function (snap) {
+      if (!snap || !snap.payload || !(snap.payload.flights || []).length) return;
+      pendingAutoSnap = snap;
+      var cnt = snap.flightCount != null ? snap.flightCount : snap.payload.flights.length;
+      document.getElementById('autoOfferMsg').textContent =
+        'Found an on-phone backup from ' + fmtWhen(snap.at) + ' with ' + cnt +
+        ' flight' + (cnt === 1 ? '' : 's') + '. Safari may have cleared the main log. Restore it?';
+      document.getElementById('autoOfferModal').classList.add('show');
+    });
+  }
 
   /* ---------- Escaping ---------- */
   function escapeHtml(s) {
@@ -1596,13 +2248,14 @@ canvas.chart { width: 100%; height: 160px; display: block; }
   /* ---------- Expose for tests ---------- */
   window.__flightLog = {
     getState: function () { return state; },
-    setState: function (s) { state = s; saveState(); },
+    setState: function (s) { state = s; saveState({ reason: 'set' }); },
     addFlight: function (f) {
       f.id = f.id || uid();
       f.minutes = f.minutes || 0;
       f.updatedAt = new Date().toISOString();
       state.flights.push(f);
-      saveState();
+      saveState({ reason: 'add' });
+      updateBackupUi();
     },
     sumMinutes: sumMinutes,
     fmtHMM: fmtHMM,
@@ -1620,15 +2273,27 @@ canvas.chart { width: 100%; height: 160px; display: block; }
     showTab: showTab,
     clearData: function () {
       state = { types: DEFAULT_TYPES.slice(), flights: [], version: 1 };
-      saveState();
+      saveState({ reason: 'clear', skipAuto: true });
+      updateBackupUi();
     },
-    STORAGE_KEY: STORAGE_KEY
+    STORAGE_KEY: STORAGE_KEY,
+    META_KEY: META_KEY,
+    buildBackupPayload: buildBackupPayload,
+    backupFilename: backupFilename,
+    shareOrDownloadBackup: shareOrDownloadBackup,
+    parseBackupText: parseBackupText,
+    listAutoSnapshots: listAutoSnapshots,
+    writeAutoSnapshot: writeAutoSnapshot,
+    getMeta: function () { return meta; },
+    updateBackupUi: updateBackupUi
   };
 
   // init
   fillTypeSelects();
   prepareAddForm(false);
   renderLog();
+  updateBackupUi();
+  maybeOfferAutoRestore();
 })();
 </script>
 </body>

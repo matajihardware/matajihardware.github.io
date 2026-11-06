@@ -1,5 +1,5 @@
 /* Minimal offline service worker for Drone Flight Log PWA */
-const CACHE = 'flightlog-v1';
+const CACHE = 'flightlog-v2';
 const ASSETS = [
   './',
   './index.html',
